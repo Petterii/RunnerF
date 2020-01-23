@@ -36,27 +36,19 @@ public class WorldContactListener implements ContactListener {
             case TRIGGER_SPAWN | PLAYER_BIT:
                 if (fixA.getFilterData().categoryBits == TRIGGER_SPAWN) {
                     ((GroundPlatform) fixA.getUserData()).spawnNewPlatform();
-                }else
+                    ((Player) fixB.getUserData()).JumpTrigger();
+
+                }else{
+                    ((Player) fixA.getUserData()).JumpTrigger();
                     ((GroundPlatform) fixB.getUserData()).spawnNewPlatform();
+                }
                 break;
         }
     }
 
     @Override
     public void endContact(Contact contact) {
-        Fixture fixA = contact.getFixtureA();
-        Fixture fixB = contact.getFixtureB();
 
-        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
-
-        switch (cDef) {
-
-            case GROUND_BIT | PLAYER_BIT:
-                if (fixA.getFilterData().categoryBits == PLAYER_BIT) {
-                    ((Player) fixA.getUserData()).fallDown();
-                }else
-                    ((Player) fixB.getUserData()).fallDown();
-        }
     }
 
     @Override

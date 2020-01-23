@@ -26,6 +26,10 @@ public class Player extends Sprite {
         mainBody.getBody().applyForce(0,-100f,0,0,true);
     }
 
+    public void JumpTrigger() {
+        mainBody.getBody().applyForceToCenter(0,260f,true);
+    }
+
 
     private enum State {SPEEDING, NORMAL, AVAILSPEED, NOTHING}
 
@@ -100,9 +104,9 @@ public class Player extends Sprite {
         roationSpeed = 2f;
         // velocity(dt);
         if (mainBody.getBody().getPosition().x < 0.0f) {
-            mainBody.getBody().setLinearVelocity(2.0f,0.0f);
+            mainBody.getBody().setLinearVelocity(2.0f,mainBody.getBody().getLinearVelocity().y);
         } else{
-            mainBody.getBody().setLinearVelocity(0.0f,0.0f);
+            mainBody.getBody().setLinearVelocity(0.0f,mainBody.getBody().getLinearVelocity().y);
         }
 
         velocity(dt);
@@ -137,12 +141,14 @@ public class Player extends Sprite {
         }
         if (!started)
             velocity = 0;
-        mainBody.getBody().setLinearVelocity(velocity*time,0);
+        mainBody.getBody().setLinearVelocity(velocity*time,mainBody.getBody().getLinearVelocity().y);
     }
 
     public void addForce(float dt) {
 
-        if (getState() == State.AVAILSPEED && !isTouching) {
+
+     if (getState() == State.AVAILSPEED && !isTouching) {
+        // mainBody.getBody().applyForceToCenter(0,200f,true);
             stateTimer = 0;
             cooldownSpeed = 0;
             velocity = 5f;
