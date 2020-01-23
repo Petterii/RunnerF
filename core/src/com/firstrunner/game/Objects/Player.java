@@ -1,6 +1,7 @@
 package com.firstrunner.game.Objects;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,12 +10,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.firstrunner.game.Firstrunner;
+import com.firstrunner.game.Helpers.CreateWorldRandomized;
 import com.firstrunner.game.Helpers.CustomBody;
 import com.firstrunner.game.Screens.GameScreen;
 
 import static com.firstrunner.game.Globals.*;
 
 public class Player extends Sprite {
+
+
+    public void started() {
+        started = true;
+    }
+    public void fallDown(){
+        mainBody.getBody().applyForce(0,-100f,0,0,true);
+    }
+
 
     private enum State {SPEEDING, NORMAL, AVAILSPEED, NOTHING}
 
@@ -33,6 +44,7 @@ public class Player extends Sprite {
         stateTimer = 10;
         cooldownSpeed = 0;
         time = 1;
+        started = false;
         defineBody();
         setBounds(0,0,50/PPM,50/PPM);
         // setRegion(playerIdle.getKeyFrame(stateTimer));
@@ -40,26 +52,29 @@ public class Player extends Sprite {
 
     private void defineBody() {
         positionX = 132;
-        positionY = 160;
+        positionY = 100;
         radius = 10;
 
-        mainBody = new CustomBody(world,positionX/PPM,positionY/PPM, CustomBody.BodyType.DYNAMICBODY,radius);
-        mainBody.Collision((short)(GROUND_BIT | ITEM_BIT),(short)PLAYER_BIT);
+        mainBody = new CustomBody(world,positionX/PPM,positionY/PPM, CustomBody.BodyType.DYNAMICBODY,radius, CustomBody.ShapeType.CIRCLE);
+        mainBody.Collision((short)(GROUND_BIT | ITEM_BIT | TRIGGER_SPAWN),(short)PLAYER_BIT);
         mainBody.Finalize(this);
     }
 
     public void collition(Items item){
-        time = 0.3f;
-        ((Sound) screen.getManager().get(BOX_BREAKING)).play();
+
         if (item instanceof SkullBox){
             SkullBox skull= (SkullBox) item;
-            if (mainBody.getBody().getLinearVelocity().x > 2.5f){
+            Gdx.app.log("LIB", "collition: "+getState().toString());
+            if (getState() == State.SPEEDING){
+                time = 0.3f;
+                ((Sound) screen.getManager().get(BOX_BREAKING)).play();
                 skull.enableDestroy();
-        }
+            } else isTouching = true;
         }
     }
 
     private State getState(){
+
         if (mainBody.getBody().getLinearVelocity().x <= 1f && cooldownSpeed < 1f)
             return State.NORMAL;
         else if (mainBody.getBody().getLinearVelocity().x >= 2f)
@@ -75,8 +90,24 @@ public class Player extends Sprite {
         return mainBody.getBody();
     }
 
+    private float roationSpeed;
+
     public void update(float dt) {
+        cooldownSpeed = cooldownSpeed +dt;
+        if (!started)
+            fallDown();
+
+        roationSpeed = 2f;
+        // velocity(dt);
+        if (mainBody.getBody().getPosition().x < 0.0f) {
+            mainBody.getBody().setLinearVelocity(2.0f,0.0f);
+        } else{
+            mainBody.getBody().setLinearVelocity(0.0f,0.0f);
+        }
+
         velocity(dt);
+
+        mainBody.getBody().setAngularVelocity(velocity*-1*roationSpeed);
         setPosition(mainBody.getBody().getPosition().x - getWidth() / 2, mainBody.getBody().getPosition().y - getHeight() / 2);
     }
 
@@ -85,6 +116,7 @@ public class Player extends Sprite {
     private float velocity;
     public static float time;
     private float cooldownSpeed;
+    private boolean started;
 
     public void velocity(float dt){
         stateTimer = stateTimer + dt;
@@ -103,20 +135,19 @@ public class Player extends Sprite {
                     break;
             }
         }
+        if (!started)
+            velocity = 0;
         mainBody.getBody().setLinearVelocity(velocity*time,0);
     }
 
     public void addForce(float dt) {
-        if (getState() == State.AVAILSPEED) {
+
+        if (getState() == State.AVAILSPEED && !isTouching) {
             stateTimer = 0;
             cooldownSpeed = 0;
             velocity = 5f;
-            isTouching = true;
         }
+
     }
 
-    public void lowerForce(float delta) {
-        //mainBody.getBody().applyForce(-10f,0,0,0, true);
-        isTouching = false;
-    }
 }

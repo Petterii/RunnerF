@@ -33,6 +33,8 @@ public class Firstrunner extends Game {
 		manager = new AssetManager();
 		// load sound and textures
 		manager.load(BACKGROUND_MENU, Texture.class);
+		manager.load(PLAYER_BALL, Texture.class);
+
 		manager.load(BOX_BREAKING, Sound.class);
 		manager.finishLoading();
 

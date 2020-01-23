@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.firstrunner.game.Firstrunner;
 import com.firstrunner.game.Helpers.CreateWorldFromTiled;
+import com.firstrunner.game.Helpers.CreateWorldRandomized;
 import com.firstrunner.game.Helpers.WorldContactListener;
 import com.firstrunner.game.Objects.Items;
 import com.firstrunner.game.Objects.Player;
@@ -31,7 +32,7 @@ public class GameScreen implements Screen {
 
     private OrthographicCamera gamecam;
 
-    private World world;
+    public static World world;
     private Box2DDebugRenderer b2dr;
 
     private TmxMapLoader mapLoad;
@@ -54,6 +55,7 @@ public class GameScreen implements Screen {
     public GameScreen(Firstrunner game) {
         this.game = game;
         this.manager = game.getManager();
+        playerSpeed = 1;
         items = new ArrayList<>();
         gamecam = new OrthographicCamera();
         viewB2Dport = new FitViewport(Firstrunner.FR_WIDTH/PPM,Firstrunner.FR_HEIGHT/PPM,gamecam);
@@ -64,7 +66,7 @@ public class GameScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map,(float)1/PPM);
 
         gamecam.position.set(viewB2Dport.getWorldWidth()/2,viewB2Dport.getWorldHeight()/2,0);
-        world = new World(new Vector2(0,-9f),true);
+        world = new World(new Vector2(0,-10f),true);
         b2dr = new Box2DDebugRenderer();
 
         player = new Player(this);
@@ -72,16 +74,23 @@ public class GameScreen implements Screen {
         // for tilerenderer
         graphicCam = new OrthographicCamera();
 
-       new CreateWorldFromTiled(this);
+      // new CreateWorldFromTiled(this);
 
        world.setContactListener(new WorldContactListener());
 
+        randomWorld = new CreateWorldRandomized(this);
+
+        gamecam.position.x = player.getMainBody().getPosition().x;
     }
 
-    private void update(float delta){
-        world.step(1/60f,6,2);
+    private  CreateWorldRandomized randomWorld;
 
-            player.update(delta);
+    private void update(float delta){
+        world.step(1.0f/60.0f,6,2);
+
+        player.update(delta);
+        randomWorld.update(delta);
+
 
         for (Items item : items) {
             if (!item.isDestroyed())
@@ -114,7 +123,7 @@ public class GameScreen implements Screen {
 
         update(delta);
 
-        renderer.render();
+      //  renderer.render();
 
         b2dr.render(world,gamecam.combined);
         game.batch.setProjectionMatrix(gamecam.combined);
@@ -122,11 +131,17 @@ public class GameScreen implements Screen {
         handleinput(delta);
     }
 
+    public static float playerSpeed;
+
     private void handleinput(float delta) {
         if (Gdx.input.isTouched()){
             player.addForce(delta);
         }
 
+    }
+
+    public float getPlayerSpeed() {
+        return playerSpeed;
     }
 
     @Override
@@ -156,5 +171,9 @@ public class GameScreen implements Screen {
         world.dispose();
         b2dr.dispose();
 
+    }
+
+    public float getPlayerX() {
+        return player.getX();
     }
 }

@@ -26,12 +26,37 @@ public class WorldContactListener implements ContactListener {
                     ((Player) fixA.getUserData()).collition(((Items) fixB.getUserData()).collition());
                 }else
                     ((Player) fixB.getUserData()).collition(((Items) fixA.getUserData()).collition());
+                break;
+            case GROUND_BIT | PLAYER_BIT:
+                if (fixA.getFilterData().categoryBits == PLAYER_BIT) {
+                    ((Player) fixA.getUserData()).started();
+                }else
+                    ((Player) fixB.getUserData()).started();
+                break;
+            case TRIGGER_SPAWN | PLAYER_BIT:
+                if (fixA.getFilterData().categoryBits == TRIGGER_SPAWN) {
+                    ((GroundPlatform) fixA.getUserData()).spawnNewPlatform();
+                }else
+                    ((GroundPlatform) fixB.getUserData()).spawnNewPlatform();
+                break;
         }
     }
 
     @Override
     public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
 
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+
+        switch (cDef) {
+
+            case GROUND_BIT | PLAYER_BIT:
+                if (fixA.getFilterData().categoryBits == PLAYER_BIT) {
+                    ((Player) fixA.getUserData()).fallDown();
+                }else
+                    ((Player) fixB.getUserData()).fallDown();
+        }
     }
 
     @Override

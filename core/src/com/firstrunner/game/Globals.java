@@ -10,10 +10,13 @@ public class Globals {
     public static final short GROUND_BIT = 4;
     public static final short ITEM_BIT = 8;
     public static final short LEVEL_END = 16;
+    public static final short TRIGGER_SPAWN = 32;
+
 
     // files textures
 
     public static final String BACKGROUND_MENU = "countryside.png";
+    public static final String PLAYER_BALL = "ball.png";
     public static final String BOX_BREAKING = "sound/box_smashed.ogg";
 
 

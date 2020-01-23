@@ -51,7 +51,7 @@ public class CustomBody {
     private BodyType bodyType;
     private World world;
 
-    public CustomBody(World world, float x, float y, BodyType bodyType, float radius) {
+    public CustomBody(World world, float x, float y, BodyType bodyType, float radius, ShapeType shapeType) {
         this.posX = x;
         this.posY = y;
         this.radius = radius;
@@ -108,7 +108,7 @@ public class CustomBody {
         switch (shapeType){
             case POLYGON:
                 PolygonShape shape = new PolygonShape();
-                shape.setAsBox(10/PPM, 10/PPM);
+                shape.setAsBox(2,1);
                 fdef.shape = shape;
                 shape.dispose();
                 break;
@@ -116,12 +116,12 @@ public class CustomBody {
                 CircleShape shape2 = new CircleShape();
                 shape2.setRadius(radius/PPM);
                 fdef.shape = shape2;
+
                 shape2.dispose();
                 break;
         }
 
     }
-
 
     public void Collision(short i, short x){
         fdef.filter.categoryBits = x; // defines this.
