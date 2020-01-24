@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -31,7 +32,7 @@ public class Player extends Sprite {
     }
 
     public void JumpTrigger() {
-        mainBody.getBody().applyForceToCenter(0,280f,true);
+        mainBody.getBody().applyForceToCenter(0,330f,true);
     }
 
 
@@ -43,8 +44,9 @@ public class Player extends Sprite {
     private int positionY;
     private int radius;
     private GameScreen screen;
-
+    private Texture texture;
     private World world;
+    private TextureRegion textureRegion;
 
     public Player(GameScreen screen) {
         this.screen = screen;
@@ -54,8 +56,13 @@ public class Player extends Sprite {
         time = 1;
         started = false;
         defineBody();
-        setBounds(0,0,50/PPM,50/PPM);
-        // setRegion(playerIdle.getKeyFrame(stateTimer));
+
+        texture = (Texture)screen.getManager().get(PLAYER_BALL);
+        textureRegion = new TextureRegion(texture,0,0,64,64);
+        setOrigin(10f/PPM,10f/PPM);
+        setBounds(0,0,20f/PPM,20f/PPM);
+        setRegion(textureRegion);
+
     }
 
     private void defineBody() {
@@ -116,7 +123,8 @@ public class Player extends Sprite {
         velocity(dt);
 
         mainBody.getBody().setAngularVelocity(velocity*-1*roationSpeed);
-        setPosition(mainBody.getBody().getPosition().x , mainBody.getBody().getPosition().y);
+        setPosition(mainBody.getBody().getPosition().x- getWidth()/2, mainBody.getBody().getPosition().y-getHeight()/2);
+       rotate(roationSpeed*velocity*-1);
     }
 
     private boolean isTouching;

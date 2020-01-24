@@ -75,7 +75,7 @@ class GroundPlatform extends Sprite {
     float insidePlatform = startPoint+(diff*rand.nextFloat());
     // dont spawn on the first platform where player starts
     if (platformX != 0)
-        screen.addObject( new SkullBox(screen.getWorld(),insidePlatform,posY+0.1f));
+        screen.addObject( new SkullBox(screen.getGameScreen(),insidePlatform,posY+0.1f));
     createTrigger();
     }
 

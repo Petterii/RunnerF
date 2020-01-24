@@ -1,6 +1,8 @@
 package com.firstrunner.game.Objects;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -23,15 +25,24 @@ public class SkullBox extends Items {
     private static int counter;
  //   private GameScreen game;
    // private World world;
+    private Texture texture;
+    private TextureRegion textureRegion;
+    private GameScreen screen;
 
-    public SkullBox(World world, float x,float y) {
+    public SkullBox(GameScreen screen, float x,float y) {
         // this.game = game;
         //this.world = world;
-
+        this.screen = screen;
         posX = x;
         posY = y;
         toDestroy = false;
         defineBody();
+
+        texture = (Texture)screen.getManager().get(TEXTURE_CRATE);
+        textureRegion = new TextureRegion(texture,0,0,96,96);
+        setOrigin(10f/PPM,10f/PPM);
+        setBounds(0,0,20f/PPM,20f/PPM);
+        setRegion(textureRegion);
     }
 
     @Override
@@ -46,6 +57,8 @@ public class SkullBox extends Items {
             isDestroyed = true;
             toDestroy = false;
         }
+        setPosition(body.getPosition().x- getWidth()/2, body.getPosition().y-getHeight()/2);
+
     }
 
     @Override
@@ -83,6 +96,8 @@ public class SkullBox extends Items {
         fixture.setUserData(this);
 
         polygonShape.dispose();
+
+
     }
 
     private Fixture fixture;

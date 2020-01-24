@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -46,6 +48,8 @@ public class GameScreen implements Screen {
     private AssetManager manager;
     private WallDestroyer wallDestroyer;
 
+
+
     public AssetManager getManager() {
         return manager;
     }
@@ -56,6 +60,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(Firstrunner game) {
         this.game = game;
+
         this.manager = game.getManager();
         playerSpeed = 1;
         items = new ArrayList<>();
@@ -72,6 +77,7 @@ public class GameScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
         player = new Player(this);
+        ball = (Texture) getManager().get(PLAYER_BALL);
 
         // for tilerenderer
         graphicCam = new OrthographicCamera();
@@ -119,6 +125,8 @@ public class GameScreen implements Screen {
 
     }
 
+    private Texture ball;
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -129,7 +137,12 @@ public class GameScreen implements Screen {
       //  renderer.render();
 
         b2dr.render(world,gamecam.combined);
+
         game.batch.setProjectionMatrix(gamecam.combined);
+        game.batch.begin();
+        randomWorld.draw(game.batch);
+        player.draw(game.batch);
+        game.batch.end();
 
         handleinput(delta);
     }

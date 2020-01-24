@@ -34,6 +34,7 @@ public class Firstrunner extends Game {
 		// load sound and textures
 		manager.load(BACKGROUND_MENU, Texture.class);
 		manager.load(PLAYER_BALL, Texture.class);
+		manager.load(TEXTURE_CRATE, Texture.class);
 
 		manager.load(BOX_BREAKING, Sound.class);
 		manager.finishLoading();

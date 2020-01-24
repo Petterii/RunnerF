@@ -17,8 +17,9 @@ public class Globals {
 
     // files textures
 
-    public static final String BACKGROUND_MENU = "countryside.png";
-    public static final String PLAYER_BALL = "ball.png";
+    public static final String BACKGROUND_MENU = "art/background/countryside.png";
+    public static final String PLAYER_BALL = "art/objects/ball1.png";
+    public static final String TEXTURE_CRATE = "art/objects/obj_crate001.png";
     public static final String BOX_BREAKING = "sound/box_smashed.ogg";
 
 

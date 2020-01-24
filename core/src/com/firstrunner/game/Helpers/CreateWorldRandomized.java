@@ -1,6 +1,8 @@
 package com.firstrunner.game.Helpers;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -102,5 +104,21 @@ public class CreateWorldRandomized {
     public void addObject(SkullBox skullBox) {
 
         objects.add(skullBox);
+    }
+
+    public GameScreen getGameScreen() {
+        return screen;
+    }
+
+    public void draw(SpriteBatch batch) {
+        /*
+        for (GroundPlatform gp : groundPlatforms) {
+            gp.draw(batch);
+        }
+        */
+        for (SkullBox sb : objects) {
+            if (!sb.isDestroyed())
+                sb.draw(batch);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.firstrunner.game.Objects;
 
-public abstract class Items {
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+public abstract class Items extends Sprite {
 
     protected boolean toDestroy;
     protected boolean isDestroyed;

@@ -48,7 +48,7 @@ public class CreateWorldFromTiled {
                 map.getLayers().get("objects").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            screen.addItem(new SkullBox(world,rect.getX()/PPM,rect.getY()/PPM));
+            screen.addItem(new SkullBox(screen,rect.getX()/PPM,rect.getY()/PPM));
             /*
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set((rect.getX() + rect.getWidth() / 2) /PPM,(rect.getY() + rect.getHeight()/2) /PPM);
