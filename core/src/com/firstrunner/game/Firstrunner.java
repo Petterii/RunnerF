@@ -43,6 +43,7 @@ public class Firstrunner extends Game {
 		manager.load(SOUND_JUMP, Sound.class);
 		manager.load(BOX_BREAKING, Sound.class);
 		manager.load(SOUND_SPEEDUP, Sound.class);
+		manager.load(SOUND_LANDING, Sound.class);
 		manager.finishLoading();
 
 

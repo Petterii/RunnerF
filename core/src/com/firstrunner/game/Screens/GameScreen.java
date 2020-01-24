@@ -1,5 +1,6 @@
 package com.firstrunner.game.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -48,6 +49,7 @@ public class GameScreen implements Screen {
     private static ArrayList<Items> items;
     private AssetManager manager;
     private WallDestroyer wallDestroyer;
+    private boolean gameover;
 
     private  Music music;
 
@@ -57,6 +59,10 @@ public class GameScreen implements Screen {
 
     public void addItem(Items item){
         items.add(item);
+    }
+
+    public void setGameover(boolean gameover) {
+        this.gameover = gameover;
     }
 
     public GameScreen(Firstrunner game) {
@@ -151,6 +157,10 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         handleinput(delta);
+
+        if (gameover){
+            game.setScreen(new GameScreen(game));
+        }
     }
 
     public static float playerSpeed;

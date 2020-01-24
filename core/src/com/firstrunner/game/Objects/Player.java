@@ -26,6 +26,7 @@ public class Player extends Sprite {
 
     public void started() {
         startRollingSound();
+        landingSound.play();
         started = true;
     }
     public void fallDown(){
@@ -35,7 +36,7 @@ public class Player extends Sprite {
     private Sound jumpsound;
     private Sound rollingsound;
     private Sound speedupSound;
-
+    private Sound landingSound;
     public void JumpTrigger() {
         jumpsound.play();
         mainBody.getBody().applyForceToCenter(0,330f,true);
@@ -53,13 +54,21 @@ public class Player extends Sprite {
     private Texture texture;
     private World world;
     private TextureRegion textureRegion;
+    private boolean isRollingSoundPlaying;
 
     public void stopRollingSound(){
-        rollingsound.stop();
+        if (isRollingSoundPlaying)
+            rollingsound.stop();
+        isRollingSoundPlaying = false;
+        isgrounded = false;
     }
     public void startRollingSound(){
-        rollingsound.play(0.1f);
+        if (!isRollingSoundPlaying)
+            rollingsound.play(0.1f);
+        isRollingSoundPlaying = true;
+        isgrounded = true;
     }
+
 
     public Player(GameScreen screen) {
         this.screen = screen;
@@ -67,7 +76,7 @@ public class Player extends Sprite {
         jumpsound = screen.getManager().get(SOUND_JUMP);
         rollingsound = screen.getManager().get(SOUND_BALL_ROLLING);
         speedupSound = screen.getManager().get(SOUND_SPEEDUP);
-
+        landingSound = screen.getManager().get(SOUND_LANDING);
         rollingsound.setLooping(1,true);
 
         stateTimer = 10;
@@ -103,7 +112,10 @@ public class Player extends Sprite {
                 time = 0.3f;
                 ((Sound) screen.getManager().get(BOX_BREAKING)).play();
                 skull.enableDestroy();
-            } else isTouching = true;
+            } else {
+                isTouching = true;
+                screen.setGameover(true);
+            }
         }
     }
 
@@ -115,6 +127,9 @@ public class Player extends Sprite {
             return State.SPEEDING;
         else if (stateTimer > 0.5f){
             time = 1;
+            if (isgrounded) {
+                startRollingSound();
+            }
             return State.AVAILSPEED;
         }
         return State.NOTHING;
@@ -124,6 +139,7 @@ public class Player extends Sprite {
         return mainBody.getBody();
     }
 
+    private boolean isgrounded;
     private float roationSpeed;
 
     public void update(float dt) {
@@ -181,6 +197,7 @@ public class Player extends Sprite {
      if (getState() == State.AVAILSPEED && !isTouching) {
         // mainBody.getBody().applyForceToCenter(0,200f,true);
             speedupSound.play();
+            stopRollingSound();
             stateTimer = 0;
             cooldownSpeed = 0;
             velocity = 5f;

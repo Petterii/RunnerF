@@ -24,6 +24,7 @@ public class Globals {
     public static final String BOX_BREAKING = "sound/box_smashed.ogg";
     public static final String SOUND_BALL_ROLLING = "sound/ball_loop.ogg";
     public static final String SOUND_JUMP = "sound/jump.wav";
+    public static final String SOUND_LANDING = "sound/ball_landing.wav";
     public static final String MUSIC_LOOP = "sound/music_piano_loop.mp3";
     public static final String SOUND_SPEEDUP = "sound/speedup.wav";
 
