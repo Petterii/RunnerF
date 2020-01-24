@@ -67,8 +67,8 @@ public class SkullBox extends Items {
 */
 
 
-        myBodyDef.type = BodyDef.BodyType.DynamicBody; //this will be a dynamic body
-        myBodyDef.position.set( 300f/PPM, 60f/PPM); //a little to the left
+        myBodyDef.type = BodyDef.BodyType.StaticBody; //this will be a dynamic body
+        myBodyDef.position.set( posX, posY); //a little to the left
 
         PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(10f/PPM,10f/PPM);

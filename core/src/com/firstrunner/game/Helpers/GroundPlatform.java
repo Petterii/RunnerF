@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.firstrunner.game.Firstrunner;
 import com.firstrunner.game.Objects.Player;
+import com.firstrunner.game.Objects.SkullBox;
 import com.firstrunner.game.Screens.GameScreen;
 
 import java.util.Random;
@@ -28,15 +29,15 @@ class GroundPlatform extends Sprite {
     private Body body;
 
  //   private World world;
-    // private CreateWorldRandomized screen;
+    private CreateWorldRandomized screen;
 
-    public GroundPlatform(World world, float platformX) {
-
+    public GroundPlatform(CreateWorldRandomized screen, float platformX) {
+        this.screen = screen;
         index = counter;
         counter++;
         this.platformX = platformX;
         Random rand = new Random();
-        float posY = rand.nextFloat();
+        float posY = (100*rand.nextFloat())/PPM;
 
         isDestroyed = false;
     //    this.world = GameScreen.world;
@@ -70,6 +71,11 @@ class GroundPlatform extends Sprite {
         triggerSpawn.Collision((short)(GROUND_BIT | PLAYER_BIT),TRIGGER_SPAWN);
         triggerSpawn.Finalize(this);
 */
+    float diff = (endPoint-startPoint);
+    float insidePlatform = startPoint+(diff*rand.nextFloat());
+    // dont spawn on the first platform where player starts
+    if (platformX != 0)
+        screen.addObject( new SkullBox(screen.getWorld(),insidePlatform,posY+0.1f));
     createTrigger();
     }
 

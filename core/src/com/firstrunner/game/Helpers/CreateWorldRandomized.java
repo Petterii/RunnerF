@@ -52,10 +52,10 @@ public class CreateWorldRandomized {
         platformX = 400;
         if (firstPlatform) {
             firstPlatform = false;
-            groundPlatforms.add(new GroundPlatform(world,chunk));
-            objects.add(new SkullBox(world, 250f / PPM, 50f / PPM));
+            groundPlatforms.add(new GroundPlatform(this,chunk));
+           // objects.add(new SkullBox(world, 250f / PPM, 50f / PPM));
         }else {
-            groundPlatforms.add(new GroundPlatform(world, chunk));
+            groundPlatforms.add(new GroundPlatform(this, chunk));
             //objects.add(new SkullBox(screen, (platformX+150f) / PPM, 50f / PPM));
         }
         chunk = chunk + 1;
@@ -97,5 +97,10 @@ public class CreateWorldRandomized {
                 groundPlatforms.removeIndex(i);
             }
         }
+    }
+
+    public void addObject(SkullBox skullBox) {
+
+        objects.add(skullBox);
     }
 }
