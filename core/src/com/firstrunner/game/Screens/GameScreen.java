@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.firstrunner.game.Firstrunner;
 import com.firstrunner.game.Helpers.CreateWorldFromTiled;
 import com.firstrunner.game.Helpers.CreateWorldRandomized;
+import com.firstrunner.game.Helpers.WallDestroyer;
 import com.firstrunner.game.Helpers.WorldContactListener;
 import com.firstrunner.game.Objects.Items;
 import com.firstrunner.game.Objects.Player;
@@ -43,6 +44,7 @@ public class GameScreen implements Screen {
     private Player player;
     private static ArrayList<Items> items;
     private AssetManager manager;
+    private WallDestroyer wallDestroyer;
 
     public AssetManager getManager() {
         return manager;
@@ -80,6 +82,7 @@ public class GameScreen implements Screen {
 
         randomWorld = new CreateWorldRandomized(this);
 
+        wallDestroyer = new WallDestroyer(this);
         gamecam.position.x = player.getMainBody().getPosition().x;
     }
 
@@ -90,7 +93,7 @@ public class GameScreen implements Screen {
 
         player.update(delta);
         randomWorld.update(delta);
-
+        wallDestroyer.update(delta);
 
         for (Items item : items) {
             if (!item.isDestroyed())

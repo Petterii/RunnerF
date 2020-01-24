@@ -17,14 +17,17 @@ import static com.firstrunner.game.Globals.*;
 
 public class SkullBox extends Items {
 
+    private int index;
     private CustomBody mainBody;
     private float posX,posY;
+    private static int counter;
  //   private GameScreen game;
    // private World world;
 
     public SkullBox(World world, float x,float y) {
         // this.game = game;
         //this.world = world;
+
         posX = x;
         posY = y;
         toDestroy = false;

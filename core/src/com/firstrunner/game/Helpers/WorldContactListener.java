@@ -43,6 +43,13 @@ public class WorldContactListener implements ContactListener {
                     ((GroundPlatform) fixB.getUserData()).spawnNewPlatform();
                 }
                 break;
+            case WALL_DESTROYER | GROUND_BIT:
+                if (fixA.getFilterData().categoryBits == GROUND_BIT) {
+                    ((GroundPlatform) fixA.getUserData()).deleteGround();
+                }else{
+                    ((GroundPlatform) fixB.getUserData()).deleteGround();
+                }
+                break;
         }
     }
 

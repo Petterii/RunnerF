@@ -11,6 +11,8 @@ public class Globals {
     public static final short ITEM_BIT = 8;
     public static final short LEVEL_END = 16;
     public static final short TRIGGER_SPAWN = 32;
+    public static final short WALL_DESTROYER = 64;
+
 
 
     // files textures

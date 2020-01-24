@@ -19,6 +19,10 @@ import static com.firstrunner.game.Globals.*;
 public class Player extends Sprite {
 
 
+    public static float getPos() {
+        return mainBody.getBody().getPosition().x;
+    }
+
     public void started() {
         started = true;
     }
@@ -27,14 +31,14 @@ public class Player extends Sprite {
     }
 
     public void JumpTrigger() {
-        mainBody.getBody().applyForceToCenter(0,260f,true);
+        mainBody.getBody().applyForceToCenter(0,280f,true);
     }
 
 
     private enum State {SPEEDING, NORMAL, AVAILSPEED, NOTHING}
 
     private float stateTimer;
-    private CustomBody mainBody;
+    private static CustomBody mainBody;
     private int positionX;
     private int positionY;
     private int radius;
@@ -112,7 +116,7 @@ public class Player extends Sprite {
         velocity(dt);
 
         mainBody.getBody().setAngularVelocity(velocity*-1*roationSpeed);
-        setPosition(mainBody.getBody().getPosition().x - getWidth() / 2, mainBody.getBody().getPosition().y - getHeight() / 2);
+        setPosition(mainBody.getBody().getPosition().x , mainBody.getBody().getPosition().y);
     }
 
     private boolean isTouching;

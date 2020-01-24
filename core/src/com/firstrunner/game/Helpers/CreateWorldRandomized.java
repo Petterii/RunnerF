@@ -23,7 +23,7 @@ import static com.firstrunner.game.Globals.PPM;
 public class CreateWorldRandomized {
 
     private static World world;
-    private static Array<GroundPlatform> groundPlatforms;
+    private Array<GroundPlatform> groundPlatforms;
     private static Array<SkullBox> objects;
     private GameScreen screen;
     private static boolean firstPlatform;
@@ -41,23 +41,25 @@ public class CreateWorldRandomized {
     groundPlatforms = new Array<>();
     objects = new Array<>();
     spawnNewPlat = false;
+    this.chunk = 0;
     spawnPlatform();
     }
 
     // private int chunkNr;
 
-    public static void spawnPlatform() {
+    public  void spawnPlatform() {
         int platformX;
-        platformX = 200;
+        platformX = 400;
         if (firstPlatform) {
             firstPlatform = false;
-            groundPlatforms.add(new GroundPlatform(world,(float)platformX*chunk));
+            groundPlatforms.add(new GroundPlatform(world,chunk));
             objects.add(new SkullBox(world, 250f / PPM, 50f / PPM));
         }else {
-            groundPlatforms.add(new GroundPlatform(world, (float)platformX*chunk));
+            groundPlatforms.add(new GroundPlatform(world, chunk));
             //objects.add(new SkullBox(screen, (platformX+150f) / PPM, 50f / PPM));
         }
         chunk = chunk + 1;
+
     }
 
     public static void spawnNewPlatform() {
