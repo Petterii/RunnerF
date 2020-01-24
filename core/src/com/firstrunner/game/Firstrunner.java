@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,8 +36,13 @@ public class Firstrunner extends Game {
 		manager.load(BACKGROUND_MENU, Texture.class);
 		manager.load(PLAYER_BALL, Texture.class);
 		manager.load(TEXTURE_CRATE, Texture.class);
+		manager.load(TEXTURE_PLATFORM1,Texture.class);
 
+		manager.load(MUSIC_LOOP, Music.class);
+		manager.load(SOUND_BALL_ROLLING, Sound.class);
+		manager.load(SOUND_JUMP, Sound.class);
 		manager.load(BOX_BREAKING, Sound.class);
+		manager.load(SOUND_SPEEDUP, Sound.class);
 		manager.finishLoading();
 
 

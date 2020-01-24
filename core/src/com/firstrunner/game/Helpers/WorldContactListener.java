@@ -55,7 +55,19 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
 
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+
+        switch (cDef) {
+            case GROUND_BIT | PLAYER_BIT:
+                if (fixA.getFilterData().categoryBits == PLAYER_BIT) {
+                    ((Player) fixA.getUserData()).stopRollingSound();
+                }else
+                    ((Player) fixB.getUserData()).stopRollingSound();
+                break;
+        }
     }
 
     @Override

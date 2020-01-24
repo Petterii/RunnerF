@@ -25,13 +25,19 @@ public class Player extends Sprite {
     }
 
     public void started() {
+        startRollingSound();
         started = true;
     }
     public void fallDown(){
         mainBody.getBody().applyForce(0,-100f,0,0,true);
     }
 
+    private Sound jumpsound;
+    private Sound rollingsound;
+    private Sound speedupSound;
+
     public void JumpTrigger() {
+        jumpsound.play();
         mainBody.getBody().applyForceToCenter(0,330f,true);
     }
 
@@ -48,9 +54,22 @@ public class Player extends Sprite {
     private World world;
     private TextureRegion textureRegion;
 
+    public void stopRollingSound(){
+        rollingsound.stop();
+    }
+    public void startRollingSound(){
+        rollingsound.play(0.1f);
+    }
+
     public Player(GameScreen screen) {
         this.screen = screen;
         this.world = screen.getWorld();
+        jumpsound = screen.getManager().get(SOUND_JUMP);
+        rollingsound = screen.getManager().get(SOUND_BALL_ROLLING);
+        speedupSound = screen.getManager().get(SOUND_SPEEDUP);
+
+        rollingsound.setLooping(1,true);
+
         stateTimer = 10;
         cooldownSpeed = 0;
         time = 1;
@@ -161,6 +180,7 @@ public class Player extends Sprite {
 
      if (getState() == State.AVAILSPEED && !isTouching) {
         // mainBody.getBody().applyForceToCenter(0,200f,true);
+            speedupSound.play();
             stateTimer = 0;
             cooldownSpeed = 0;
             velocity = 5f;

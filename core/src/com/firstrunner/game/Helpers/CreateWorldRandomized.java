@@ -110,12 +110,14 @@ public class CreateWorldRandomized {
         return screen;
     }
 
+
     public void draw(SpriteBatch batch) {
-        /*
+
         for (GroundPlatform gp : groundPlatforms) {
-            gp.draw(batch);
+            if (!gp.isDestroyed)
+                gp.draw(batch);
         }
-        */
+
         for (SkullBox sb : objects) {
             if (!sb.isDestroyed())
                 sb.draw(batch);

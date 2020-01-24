@@ -1,7 +1,9 @@
 package com.firstrunner.game.Helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -76,11 +78,22 @@ class GroundPlatform extends Sprite {
     // dont spawn on the first platform where player starts
     if (platformX != 0)
         screen.addObject( new SkullBox(screen.getGameScreen(),insidePlatform,posY+0.1f));
-    createTrigger();
+        createTrigger();
+
+
+        texture = (Texture)screen.getGameScreen().getManager().get(TEXTURE_PLATFORM1);
+        textureRegion = new TextureRegion(texture,0,0,1057,241);
+        setOrigin(endPoint-startPoint,1);
+        float ything = posY-getHeight();
+        setBounds(startPoint,posY-0.25f,endPoint-startPoint,0.3f);
+        setRegion(textureRegion);
     }
 
     float startPoint;
     float endPoint;
+
+    private Texture texture;
+    private TextureRegion textureRegion;
 
     private float platformX;
     private void createTrigger(){
@@ -109,13 +122,15 @@ class GroundPlatform extends Sprite {
         fixture.setUserData(this);
 
         shape.dispose();
+
+
     }
 
 
     public void update(float delta){
       //  deleteGroundIfpassed(delta);
 
-        setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
+        //setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         deleteGroundIfpassed(delta);
     }
 

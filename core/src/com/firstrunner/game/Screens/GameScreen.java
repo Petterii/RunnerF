@@ -3,6 +3,7 @@ package com.firstrunner.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -48,7 +49,7 @@ public class GameScreen implements Screen {
     private AssetManager manager;
     private WallDestroyer wallDestroyer;
 
-
+    private  Music music;
 
     public AssetManager getManager() {
         return manager;
@@ -90,6 +91,11 @@ public class GameScreen implements Screen {
 
         wallDestroyer = new WallDestroyer(this);
         gamecam.position.x = player.getMainBody().getPosition().x;
+
+        music = game.getManager().get(MUSIC_LOOP);
+        music.setLooping(true);
+        music.setVolume(0.4f);
+        music.play();
     }
 
     private  CreateWorldRandomized randomWorld;
@@ -136,7 +142,7 @@ public class GameScreen implements Screen {
 
       //  renderer.render();
 
-        b2dr.render(world,gamecam.combined);
+        //b2dr.render(world,gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -186,7 +192,7 @@ public class GameScreen implements Screen {
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
-
+        music.dispose();
     }
 
     public float getPlayerX() {
