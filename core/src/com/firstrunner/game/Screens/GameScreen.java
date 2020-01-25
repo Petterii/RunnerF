@@ -186,7 +186,7 @@ public class GameScreen implements Screen {
         sb.draw(background1,bgOffset1,-Firstrunner.FR_HEIGHT/2);
         sb.draw(background2,bgOffset2,-Firstrunner.FR_HEIGHT/2);
         if (!gameStarted) {
-            sb.draw(clicktogo, 100f, 100f);
+            sb.draw(clicktogo, -200f, -150f);
           }
         sb.end();
 
