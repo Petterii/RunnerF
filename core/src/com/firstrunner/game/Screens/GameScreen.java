@@ -46,6 +46,8 @@ public class GameScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private Viewport viewB2Dport; // viewB2Dport for 2dworld
+    private Viewport viewBGFXport; // background
+
     private OrthographicCamera graphicCam;
     private Player player;
     private static ArrayList<Items> items;
@@ -78,8 +80,6 @@ public class GameScreen implements Screen {
         gamecam = new OrthographicCamera();
         viewB2Dport = new FitViewport(Firstrunner.FR_WIDTH/PPM,Firstrunner.FR_HEIGHT/PPM,gamecam);
         viewB2Dport.apply();
-        //graphicCam = new OrthographicCamera();
-
         mapLoad = new TmxMapLoader();
         map = mapLoad.load("runner.tmx");
         renderer = new OrthogonalTiledMapRenderer(map,(float)1/PPM);
@@ -92,7 +92,10 @@ public class GameScreen implements Screen {
         clicktogo = (Texture) getManager().get(TEXTURE_CLICKTOGO);
 
         sb = new SpriteBatch();
+
         graphicCam = new OrthographicCamera();
+        viewBGFXport = new FitViewport(Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT,graphicCam);
+        viewBGFXport.apply();
         background1 = (Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS);
         background2 = (Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS);
 
@@ -110,12 +113,22 @@ public class GameScreen implements Screen {
         music.setVolume(0.4f);
         music.play();
 
-        bgOffset1 = 0.0f;
-        bgOffset2 = 800.0f;
+        bgOffset1 = -400.0f;
+        bgOffset2 = 400.0f;
     }
 
 
     private  CreateWorldRandomized randomWorld;
+
+    public void backgroundScrollingupdate(float delta){
+        bgOffset1 = bgOffset1+(delta*speed*playerSpeed);
+        bgOffset2 = bgOffset2+(delta*speed*playerSpeed);
+        if (bgOffset1 <= -1200)
+            bgOffset1 = bgOffset2 + 799;
+        else if (bgOffset2 <= -1200)
+            bgOffset2 = bgOffset1 + 799;
+
+    }
 
     private void update(float delta){
         world.step(1.0f/60.0f,6,2);
@@ -123,7 +136,8 @@ public class GameScreen implements Screen {
             player.update(delta);
         randomWorld.update(delta);
         wallDestroyer.update(delta);
-
+        if (gameStarted)
+            backgroundScrollingupdate(delta);
 
         for (Items item : items) {
             if (!item.isDestroyed())
@@ -167,19 +181,13 @@ public class GameScreen implements Screen {
       //  renderer.render();
 
         //b2dr.render(world,gamecam.combined);
+        sb.setProjectionMatrix(graphicCam.combined);
         sb.begin();
-        bgOffset1 = bgOffset1+delta*speed*playerSpeed;
-        bgOffset2 = bgOffset2+delta*speed*playerSpeed;
-        if (bgOffset1 <= -799)
-            bgOffset1 = 799;
-        if (bgOffset2 <= -799)
-            bgOffset2 = 799;
-
-        if (!gameStarted)
+        sb.draw(background1,bgOffset1,-Firstrunner.FR_HEIGHT/2);
+        sb.draw(background2,bgOffset2,-Firstrunner.FR_HEIGHT/2);
+        if (!gameStarted) {
             sb.draw(clicktogo, 100f, 100f);
-          //  bg.draw(sb);
-        sb.draw(background1,bgOffset1,0);
-        sb.draw(background2,bgOffset2,0);
+          }
         sb.end();
 
         game.batch.setProjectionMatrix(gamecam.combined);

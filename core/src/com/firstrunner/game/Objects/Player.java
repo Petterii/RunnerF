@@ -48,7 +48,7 @@ public class Player extends Sprite {
 
     public float getSpeed(){
 
-        return velocity;
+        return 10f;
     }
 
     private enum State {SPEEDING, NORMAL, AVAILSPEED, NOTHING}
