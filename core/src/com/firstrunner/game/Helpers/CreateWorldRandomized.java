@@ -55,7 +55,9 @@ public class CreateWorldRandomized {
         if (firstPlatform) {
             firstPlatform = false;
             groundPlatforms.add(new GroundPlatform(this,chunk));
-           // objects.add(new SkullBox(world, 250f / PPM, 50f / PPM));
+            chunk = chunk + 1;
+            groundPlatforms.add(new GroundPlatform(this,chunk));
+            // objects.add(new SkullBox(world, 250f / PPM, 50f / PPM));
         }else {
             groundPlatforms.add(new GroundPlatform(this, chunk));
             //objects.add(new SkullBox(screen, (platformX+150f) / PPM, 50f / PPM));

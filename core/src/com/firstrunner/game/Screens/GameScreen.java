@@ -110,7 +110,7 @@ public class GameScreen implements Screen {
 
         music = game.getManager().get(MUSIC_LOOP);
         music.setLooping(true);
-        music.setVolume(0.4f);
+        music.setVolume(0.09f);
         music.play();
 
         bgOffset1 = -400.0f;
