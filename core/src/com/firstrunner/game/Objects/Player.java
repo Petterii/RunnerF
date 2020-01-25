@@ -42,6 +42,14 @@ public class Player extends Sprite {
         mainBody.getBody().applyForceToCenter(0,330f,true);
     }
 
+    public boolean isStarted() {
+        return started;
+    }
+
+    public float getSpeed(){
+
+        return velocity;
+    }
 
     private enum State {SPEEDING, NORMAL, AVAILSPEED, NOTHING}
 
@@ -64,7 +72,7 @@ public class Player extends Sprite {
     }
     public void startRollingSound(){
         if (!isRollingSoundPlaying)
-            rollingsound.play(0.1f);
+            rollingsound.play(0.2f);
         isRollingSoundPlaying = true;
         isgrounded = true;
     }
@@ -143,6 +151,7 @@ public class Player extends Sprite {
     private float roationSpeed;
 
     public void update(float dt) {
+
         cooldownSpeed = cooldownSpeed +dt;
         if (!started)
             fallDown();

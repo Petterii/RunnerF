@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.firstrunner.game.Firstrunner;
+import com.firstrunner.game.Helpers.Background;
 import com.firstrunner.game.Helpers.CreateWorldFromTiled;
 import com.firstrunner.game.Helpers.CreateWorldRandomized;
 import com.firstrunner.game.Helpers.WallDestroyer;
@@ -51,6 +53,7 @@ public class GameScreen implements Screen {
     private WallDestroyer wallDestroyer;
     private boolean gameover;
 
+    private SpriteBatch sb;
     private  Music music;
 
     public AssetManager getManager() {
@@ -67,13 +70,15 @@ public class GameScreen implements Screen {
 
     public GameScreen(Firstrunner game) {
         this.game = game;
-
+        gameStarted = false;
         this.manager = game.getManager();
         playerSpeed = 1;
+        speed = -110f;
         items = new ArrayList<>();
         gamecam = new OrthographicCamera();
         viewB2Dport = new FitViewport(Firstrunner.FR_WIDTH/PPM,Firstrunner.FR_HEIGHT/PPM,gamecam);
         viewB2Dport.apply();
+        //graphicCam = new OrthographicCamera();
 
         mapLoad = new TmxMapLoader();
         map = mapLoad.load("runner.tmx");
@@ -84,12 +89,14 @@ public class GameScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
         player = new Player(this);
-        ball = (Texture) getManager().get(PLAYER_BALL);
+        clicktogo = (Texture) getManager().get(TEXTURE_CLICKTOGO);
 
-        // for tilerenderer
+        sb = new SpriteBatch();
         graphicCam = new OrthographicCamera();
+        background1 = (Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS);
+        background2 = (Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS);
 
-      // new CreateWorldFromTiled(this);
+        // new CreateWorldFromTiled(this);
 
        world.setContactListener(new WorldContactListener());
 
@@ -102,16 +109,21 @@ public class GameScreen implements Screen {
         music.setLooping(true);
         music.setVolume(0.4f);
         music.play();
+
+        bgOffset1 = 0.0f;
+        bgOffset2 = 800.0f;
     }
+
 
     private  CreateWorldRandomized randomWorld;
 
     private void update(float delta){
         world.step(1.0f/60.0f,6,2);
-
-        player.update(delta);
+        if (!player.isStarted() || (player.isStarted() && gameStarted))
+            player.update(delta);
         randomWorld.update(delta);
         wallDestroyer.update(delta);
+
 
         for (Items item : items) {
             if (!item.isDestroyed())
@@ -137,8 +149,14 @@ public class GameScreen implements Screen {
 
     }
 
-    private Texture ball;
+    private Texture background1;
+    private Texture background2;
+    private Texture clicktogo;
+    private float bgOffset1;
+    private float bgOffset2;
 
+    private float backgroundX;
+    private float speed;
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -149,12 +167,28 @@ public class GameScreen implements Screen {
       //  renderer.render();
 
         //b2dr.render(world,gamecam.combined);
+        sb.begin();
+        bgOffset1 = bgOffset1+delta*speed*playerSpeed;
+        bgOffset2 = bgOffset2+delta*speed*playerSpeed;
+        if (bgOffset1 <= -799)
+            bgOffset1 = 799;
+        if (bgOffset2 <= -799)
+            bgOffset2 = 799;
+
+        if (!gameStarted)
+            sb.draw(clicktogo, 100f, 100f);
+          //  bg.draw(sb);
+        sb.draw(background1,bgOffset1,0);
+        sb.draw(background2,bgOffset2,0);
+        sb.end();
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         randomWorld.draw(game.batch);
         player.draw(game.batch);
+
         game.batch.end();
+
 
         handleinput(delta);
 
@@ -164,10 +198,14 @@ public class GameScreen implements Screen {
     }
 
     public static float playerSpeed;
+    private static boolean gameStarted;
 
     private void handleinput(float delta) {
         if (Gdx.input.isTouched()){
-            player.addForce(delta);
+            if (gameStarted)
+                player.addForce(delta);
+            else
+                gameStarted = true;
         }
 
     }

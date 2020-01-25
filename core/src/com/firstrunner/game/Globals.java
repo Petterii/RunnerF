@@ -27,5 +27,9 @@ public class Globals {
     public static final String SOUND_LANDING = "sound/ball_landing.wav";
     public static final String MUSIC_LOOP = "sound/music_piano_loop.mp3";
     public static final String SOUND_SPEEDUP = "sound/speedup.wav";
+    public static final String TEXTURE_CLICKTOGO = "art/objects/click_to_go.png";
+    public static final String TEXTURE_BACKGROUNDENDLESS = "art/objects/full_background.png";
+
+
 
 }
