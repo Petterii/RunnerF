@@ -30,6 +30,8 @@ public class Globals {
     public static final String TEXTURE_CLICKTOGO = "art/objects/click_to_go.png";
     public static final String TEXTURE_BACKGROUNDENDLESS = "art/objects/full_background.png";
 
+  public static final String TEXTURE_EXPLOSION = "art/objects/explosion.png";
+
 
 
 }

@@ -120,7 +120,7 @@ public class Player extends Sprite {
                 time = 0.3f;
                 ((Sound) screen.getManager().get(BOX_BREAKING)).play();
                 skull.enableDestroy();
-            } else {
+            } else if (!skull.toDestroy){
                 isTouching = true;
                 screen.setGameover(true);
             }

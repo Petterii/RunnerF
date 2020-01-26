@@ -39,7 +39,7 @@ public class Firstrunner extends Game {
 		manager.load(TEXTURE_PLATFORM1,Texture.class);
 		manager.load(TEXTURE_CLICKTOGO,Texture.class);
 		manager.load(TEXTURE_BACKGROUNDENDLESS,Texture.class);
-
+		manager.load(TEXTURE_EXPLOSION, Texture.class);
 
 		manager.load(MUSIC_LOOP, Music.class);
 		manager.load(SOUND_BALL_ROLLING, Sound.class);
@@ -47,6 +47,8 @@ public class Firstrunner extends Game {
 		manager.load(BOX_BREAKING, Sound.class);
 		manager.load(SOUND_SPEEDUP, Sound.class);
 		manager.load(SOUND_LANDING, Sound.class);
+
+
 		manager.finishLoading();
 
 

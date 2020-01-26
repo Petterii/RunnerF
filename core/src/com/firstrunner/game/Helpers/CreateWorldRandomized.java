@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.firstrunner.game.Firstrunner;
+import com.firstrunner.game.Objects.Explosion;
 import com.firstrunner.game.Objects.SkullBox;
 import com.firstrunner.game.Screens.GameScreen;
 
@@ -27,6 +28,8 @@ public class CreateWorldRandomized {
     private static World world;
     private Array<GroundPlatform> groundPlatforms;
     private static Array<SkullBox> objects;
+    private static Array<Explosion> explosions;
+
     private GameScreen screen;
     private static boolean firstPlatform;
     private static float playerX;
@@ -42,6 +45,7 @@ public class CreateWorldRandomized {
     secondPlatform = false;
     groundPlatforms = new Array<>();
     objects = new Array<>();
+    explosions = new Array<>();
     spawnNewPlat = false;
     this.chunk = 0;
     spawnPlatform();
@@ -66,6 +70,10 @@ public class CreateWorldRandomized {
 
     }
 
+    public void addExplosion(float x, float y){
+        explosions.add(new Explosion(screen,x,y,false));
+    }
+
     public static void spawnNewPlatform() {
         spawnNewPlat = true;
     }
@@ -84,6 +92,9 @@ public class CreateWorldRandomized {
         for (SkullBox object : objects) {
             object.update(delta);
         }
+        for (Explosion object : explosions) {
+            object.update(delta);
+        }
 
         if (spawnNewPlat) {
             spawnNewPlat =false;
@@ -98,9 +109,26 @@ public class CreateWorldRandomized {
     private void removeGrounds() {
         for (int i = 0; i < groundPlatforms.size; i++) {
             if (groundPlatforms.get(i).isDestroyed) {
+
                 groundPlatforms.removeIndex(i);
             }
         }
+
+        for (int i = 0; i < objects.size; i++) {
+            if (objects.get(i).isDestroyed()) {
+                addExplosion(objects.get(i).getX(),objects.get(i).getY());
+                objects.removeIndex(i);
+            }
+        }
+
+        for (int i = 0; i < explosions.size; i++) {
+            if (explosions.get(i).isDestroyed()) {
+                explosions.removeIndex(i);
+            }
+        }
+
+
+
     }
 
     public void addObject(SkullBox skullBox) {
@@ -121,6 +149,11 @@ public class CreateWorldRandomized {
         }
 
         for (SkullBox sb : objects) {
+            if (!sb.isDestroyed())
+                sb.draw(batch);
+        }
+
+        for (Explosion sb : explosions) {
             if (!sb.isDestroyed())
                 sb.draw(batch);
         }

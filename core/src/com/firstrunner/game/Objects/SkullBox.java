@@ -2,6 +2,7 @@ package com.firstrunner.game.Objects;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.firstrunner.game.Helpers.CustomBody;
 import com.firstrunner.game.Screens.GameScreen;
 
@@ -29,40 +31,72 @@ public class SkullBox extends Items {
     private TextureRegion textureRegion;
     private GameScreen screen;
 
+
+
     public SkullBox(GameScreen screen, float x,float y) {
         // this.game = game;
         //this.world = world;
         this.screen = screen;
         posX = x;
         posY = y;
+        stateTimer = 0;
         toDestroy = false;
         defineBody();
 
         texture = (Texture)screen.getManager().get(TEXTURE_CRATE);
         textureRegion = new TextureRegion(texture,0,0,96,96);
+
         setOrigin(10f/PPM,10f/PPM);
         setBounds(0,0,20f/PPM,20f/PPM);
         setRegion(textureRegion);
     }
 
-    @Override
-    public Items collition() {
-        return this;
+    private Animation boxExplosion;
+
+
+
+    private float stateTimer;
+
+    private TextureRegion getFrame(float dt){
+        TextureRegion region = new TextureRegion();
+        stateTimer = stateTimer + dt;
+        if(toDestroy) {
+
+            if (stateTimer > 3f) {
+
+                isDestroyed = true;
+                toDestroy = false;
+            }
+           // region = boxExplosion.getKeyFrame(stateTimer);
+        }
+          //  region = boxExplosion.getKeyFrame(stateTimer);
+        return null;
     }
 
     @Override
+    public Items collition() {
+        stateTimer = 0;
+        return this;
+    }
+
+
+    @Override
     public void update(float dt) {
+
         if (toDestroy){
+
             GameScreen.world.destroyBody(body);
             isDestroyed = true;
             toDestroy = false;
         }
         setPosition(body.getPosition().x- getWidth()/2, body.getPosition().y-getHeight()/2);
-
+            setRegion(textureRegion);
     }
+
 
     @Override
     public void enableDestroy() {
+        stateTimer = 0;
         toDestroy = true;
     }
 
@@ -70,6 +104,8 @@ public class SkullBox extends Items {
     public boolean isDestroyed() {
         return isDestroyed;
     }
+
+
 
     private void defineBody(){
         int radius = 10;
@@ -88,7 +124,7 @@ public class SkullBox extends Items {
         fd.shape = polygonShape;
         fd.filter.categoryBits = ITEM_BIT;
         fd.filter.maskBits = PLAYER_BIT | GROUND_BIT;
-
+        fd.isSensor = true;
         body = GameScreen.world.createBody(myBodyDef);
 
         fixture = body.createFixture(polygonShape,1);

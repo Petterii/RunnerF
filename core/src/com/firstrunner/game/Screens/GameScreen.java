@@ -180,11 +180,11 @@ public class GameScreen implements Screen {
 
       //  renderer.render();
 
-        //b2dr.render(world,gamecam.combined);
+        b2dr.render(world,gamecam.combined);
         sb.setProjectionMatrix(graphicCam.combined);
         sb.begin();
-        sb.draw(background1,bgOffset1,-Firstrunner.FR_HEIGHT/2);
-        sb.draw(background2,bgOffset2,-Firstrunner.FR_HEIGHT/2);
+      //  sb.draw(background1,bgOffset1,-Firstrunner.FR_HEIGHT/2);
+      //  sb.draw(background2,bgOffset2,-Firstrunner.FR_HEIGHT/2);
         if (!gameStarted) {
             sb.draw(clicktogo, -200f, -150f);
           }
