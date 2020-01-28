@@ -6,11 +6,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -125,6 +128,8 @@ public class GameScreen implements Screen {
         float width = bg.getWidth();
         bgOffset1 = -bg.getWidth();
         bgOffset2 = 0;
+
+        initializeFonts();
     }
 
     private Hills bg,bg1;
@@ -141,6 +146,19 @@ public class GameScreen implements Screen {
             bgOffset2 = bgOffset1 + bgwidth-1f;
         bgOffset1 = bgOffset1-1f;
         bgOffset2 = bgOffset2-1f;
+    }
+
+    FreeTypeFontGenerator fontGenerator;
+    FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
+    BitmapFont font;
+    private void initializeFonts(){
+        fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(FONT_ITALIC));
+        fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.size = 11;
+        fontParameter.borderWidth = 3;
+        fontParameter.borderColor = Color.BLACK;
+        fontParameter.color = Color.WHITE;
+        font = fontGenerator.generateFont(fontParameter);
     }
 
     private void update(float delta){
@@ -216,11 +234,16 @@ public class GameScreen implements Screen {
         hud.stage.draw();
 
         sb.begin();
+
         if (!gameStarted) {
             sb.draw(clicktogo, -200f, -150f);
         }
-        if (playerdead)
-            sb.draw((Texture)manager.get(TEXTURE_RETRYBUTTON),-Firstrunner.FR_WIDTH/3f,-30f);
+        if (playerdead) {
+            font.draw(sb,"HighScore: "+ Hud.getScore(),10f,20f);
+            font.draw(sb,"Score: "+ Hud.getScore(),10f,-20f);
+            sb.draw((Texture) manager.get(TEXTURE_RETRYBUTTON), -Firstrunner.FR_WIDTH / 3f, -30f);
+        }
+
         sb.end();
 
 

@@ -33,6 +33,9 @@ public class Globals {
     public static final String TEXTURE_RETRYBUTTON = "art/objects/retrybutton.png";
   public static final String TEXTURE_EXPLOSION = "art/objects/explosion.png";
     public static final String TEXTURE_ARROW = "art/objects/ornamented_arrow.png";
+    public static final String FONT_ITALIC = "fonts/xcelsion_italic.ttf";
+
+
 
 
 
