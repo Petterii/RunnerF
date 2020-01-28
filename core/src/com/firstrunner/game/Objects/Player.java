@@ -102,9 +102,7 @@ public class Player extends Sprite {
         rollingsound = screen.getManager().get(SOUND_BALL_ROLLING);
         speedupSound = screen.getManager().get(SOUND_SPEEDUP);
         landingSound = screen.getManager().get(SOUND_LANDING);
-        rollingsound.setLooping(1,true);
-        rollingsound.play();
-        rollingsound.pause(1);
+        
         stateTimer = 10;
         cooldownSpeed = 0;
         time = 1;
