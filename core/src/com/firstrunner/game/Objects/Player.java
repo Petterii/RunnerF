@@ -135,7 +135,7 @@ public class Player extends Sprite {
         if (item instanceof SkullBox){
             SkullBox skull= (SkullBox) item;
             Gdx.app.log("LIB", "collition: "+getState().toString());
-            if (getState() == State.SPEEDING){
+            if (getState() == State.SPEEDING || mainBody.getBody().getPosition().y > skull.getBody().getPosition().y+10f/PPM){
                 time = 0.3f;
                 ((Sound) screen.getManager().get(BOX_BREAKING)).play();
                 skull.enableDestroy();

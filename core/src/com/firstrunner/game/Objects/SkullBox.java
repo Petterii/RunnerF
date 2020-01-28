@@ -32,6 +32,9 @@ public class SkullBox extends Items {
     private GameScreen screen;
 
 
+    public Body getBody(){
+        return body;
+    }
 
     public SkullBox(GameScreen screen, float x,float y) {
         // this.game = game;
