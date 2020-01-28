@@ -26,6 +26,7 @@ import com.firstrunner.game.Firstrunner;
 import com.firstrunner.game.Helpers.Background;
 import com.firstrunner.game.Helpers.CreateWorldFromTiled;
 import com.firstrunner.game.Helpers.CreateWorldRandomized;
+import com.firstrunner.game.Helpers.Prefferences;
 import com.firstrunner.game.Helpers.WallDestroyer;
 import com.firstrunner.game.Helpers.WorldContactListener;
 import com.firstrunner.game.Objects.Hills;
@@ -239,7 +240,12 @@ public class GameScreen implements Screen {
             sb.draw(clicktogo, -200f, -150f);
         }
         if (playerdead) {
-            font.draw(sb,"HighScore: "+ Hud.getScore(),10f,20f);
+            Hud.setHighScore(Prefferences.getPreffsHighScore());
+            if (Prefferences.getPreffsHighScore() < Hud.getScore()) {
+                Prefferences.savePreffs(Hud.getScore());
+                Hud.setHighScore(Hud.getScore());
+            }
+            font.draw(sb,"HighScore: "+ Hud.getHighScore(),10f,20f);
             font.draw(sb,"Score: "+ Hud.getScore(),10f,-20f);
             sb.draw((Texture) manager.get(TEXTURE_RETRYBUTTON), -Firstrunner.FR_WIDTH / 3f, -30f);
         }

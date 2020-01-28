@@ -16,6 +16,7 @@ public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewPort;
 
+    private static Integer highScore;
     private static Integer score;
     static Label scoreLabel;
 
@@ -51,6 +52,14 @@ public class Hud implements Disposable {
     public static void addScore(int value){
         score += value;
         scoreLabel.setText(String.format("%06d", score));
+    }
+
+    public static Integer getHighScore() {
+        return highScore;
+    }
+
+    public static void setHighScore(Integer highScore) {
+        Hud.highScore = highScore;
     }
 
     @Override
