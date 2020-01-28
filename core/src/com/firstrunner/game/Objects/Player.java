@@ -14,6 +14,7 @@ import com.firstrunner.game.Firstrunner;
 import com.firstrunner.game.Helpers.CreateWorldRandomized;
 import com.firstrunner.game.Helpers.CustomBody;
 import com.firstrunner.game.Screens.GameScreen;
+import com.firstrunner.game.Screens.Hud;
 
 import static com.firstrunner.game.Globals.*;
 
@@ -89,7 +90,7 @@ public class Player extends Sprite {
         if (!isRollingSoundPlaying) {
             soundId = rollingsound.play(0.3f);
             rollingsound.setLooping(soundId,true);
-            rollingsound.setPitch(soundId,1f);
+            rollingsound.setPitch(soundId,0.1f);
          }
         isRollingSoundPlaying = true;
     }
@@ -102,7 +103,7 @@ public class Player extends Sprite {
         rollingsound = screen.getManager().get(SOUND_BALL_ROLLING);
         speedupSound = screen.getManager().get(SOUND_SPEEDUP);
         landingSound = screen.getManager().get(SOUND_LANDING);
-        
+
         stateTimer = 10;
         cooldownSpeed = 0;
         time = 1;
@@ -136,6 +137,7 @@ public class Player extends Sprite {
                 time = 0.3f;
                 ((Sound) screen.getManager().get(BOX_BREAKING)).play();
                 skull.enableDestroy();
+                Hud.addScore(20);
             } else if (!skull.toDestroy){
                 isTouching = true;
                 screen.setGameover(true);

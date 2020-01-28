@@ -59,6 +59,8 @@ public class GameScreen implements Screen {
     private SpriteBatch sb;
     private  Music music;
 
+    private Hud hud;
+
     public AssetManager getManager() {
         return manager;
     }
@@ -73,6 +75,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(Firstrunner game) {
         this.game = game;
+        this.hud = new Hud(game.batch);
         gameStarted = false;
         this.manager = game.getManager();
         playerSpeed = 1;
@@ -128,7 +131,7 @@ public class GameScreen implements Screen {
     private  CreateWorldRandomized randomWorld;
 
     public void backgroundScrollingupdate(float delta){
-float width = bg.getWidth();
+    float width = bg.getWidth();
         if (bgOffset1 <= -bg.getWidth()-(Firstrunner.FR_WIDTH/2))
             bgOffset1 = bgOffset2 + bgwidth-1f;
         else if (bgOffset2 <= -bg.getWidth()-(Firstrunner.FR_WIDTH/2))
@@ -156,6 +159,7 @@ float width = bg.getWidth();
             bg.update(delta,bgOffset1);
             bg1.update(delta,bgOffset2);
             graphicCam.update();
+            hud.update(delta);
             renderer.setView(gamecam);
     }
 
@@ -213,7 +217,7 @@ float width = bg.getWidth();
         player.draw(game.batch);
 
         game.batch.end();
-
+        hud.stage.draw();
 
         handleinput(delta);
 
