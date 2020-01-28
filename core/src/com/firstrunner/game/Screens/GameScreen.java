@@ -24,6 +24,7 @@ import com.firstrunner.game.Helpers.CreateWorldFromTiled;
 import com.firstrunner.game.Helpers.CreateWorldRandomized;
 import com.firstrunner.game.Helpers.WallDestroyer;
 import com.firstrunner.game.Helpers.WorldContactListener;
+import com.firstrunner.game.Objects.Hills;
 import com.firstrunner.game.Objects.Items;
 import com.firstrunner.game.Objects.Player;
 
@@ -75,7 +76,7 @@ public class GameScreen implements Screen {
         gameStarted = false;
         this.manager = game.getManager();
         playerSpeed = 1;
-        speed = -110f;
+        speed = -1f;
         items = new ArrayList<>();
         gamecam = new OrthographicCamera();
         viewB2Dport = new FitViewport(Firstrunner.FR_WIDTH/PPM,Firstrunner.FR_HEIGHT/PPM,gamecam);
@@ -92,13 +93,15 @@ public class GameScreen implements Screen {
         clicktogo = (Texture) getManager().get(TEXTURE_CLICKTOGO);
 
         sb = new SpriteBatch();
-
+        background1 = (Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS);
+        background2 = (Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS);
         graphicCam = new OrthographicCamera();
         viewBGFXport = new FitViewport(Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT,graphicCam);
         viewBGFXport.apply();
-        background1 = (Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS);
-        background2 = (Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS);
+        bg = new Hills(this,1);
+        bg1 = new Hills(this,2);
 
+        // backgroundC = new Background(this);
         // new CreateWorldFromTiled(this);
 
        world.setContactListener(new WorldContactListener());
@@ -113,27 +116,32 @@ public class GameScreen implements Screen {
         music.setVolume(0.09f);
         music.play();
 
-        bgOffset1 = -400.0f;
-        bgOffset2 = 400.0f;
+        float width = bg.getWidth();
+        bgOffset1 = -bg.getWidth();
+        bgOffset2 = 0;
     }
 
+    private Hills bg,bg1;
+    private final float bgwidth = 437f;
+    private Background backgroundC;
 
     private  CreateWorldRandomized randomWorld;
 
     public void backgroundScrollingupdate(float delta){
-        bgOffset1 = bgOffset1+(delta*speed*playerSpeed);
-        bgOffset2 = bgOffset2+(delta*speed*playerSpeed);
-        if (bgOffset1 <= -1200)
-            bgOffset1 = bgOffset2 + 799;
-        else if (bgOffset2 <= -1200)
-            bgOffset2 = bgOffset1 + 799;
-
+float width = bg.getWidth();
+        if (bgOffset1 <= -bg.getWidth()-(Firstrunner.FR_WIDTH/2))
+            bgOffset1 = bgOffset2 + bgwidth-1f;
+        else if (bgOffset2 <= -bg.getWidth()-(Firstrunner.FR_WIDTH/2))
+            bgOffset2 = bgOffset1 + bgwidth-1f;
+        bgOffset1 = bgOffset1-1f;
+        bgOffset2 = bgOffset2-1f;
     }
 
     private void update(float delta){
         world.step(1.0f/60.0f,6,2);
-        if (!player.isStarted() || (player.isStarted() && gameStarted))
+        if (!player.isStarted() || (player.isStarted() && gameStarted)) {
             player.update(delta);
+        }
         randomWorld.update(delta);
         wallDestroyer.update(delta);
         if (gameStarted)
@@ -145,6 +153,9 @@ public class GameScreen implements Screen {
         }
             gamecam.position.x = player.getMainBody().getPosition().x;
             gamecam.update();
+            bg.update(delta,bgOffset1);
+            bg1.update(delta,bgOffset2);
+            graphicCam.update();
             renderer.setView(gamecam);
     }
 
@@ -178,13 +189,18 @@ public class GameScreen implements Screen {
 
         update(delta);
 
+      //  backgroundC.update(delta);
       //  renderer.render();
 
-        b2dr.render(world,gamecam.combined);
+       // b2dr.render(world,gamecam.combined);
         sb.setProjectionMatrix(graphicCam.combined);
         sb.begin();
-      //  sb.draw(background1,bgOffset1,-Firstrunner.FR_HEIGHT/2);
-      //  sb.draw(background2,bgOffset2,-Firstrunner.FR_HEIGHT/2);
+        //sb.draw(background1,bgOffset1,-Firstrunner.FR_HEIGHT/2,1200,Firstrunner.FR_HEIGHT);
+        //sb.draw(background2,bgOffset2,-Firstrunner.FR_HEIGHT/2,1200,Firstrunner.FR_HEIGHT);
+        //backgroundC.draw(sb);
+        //
+        bg.draw(sb);
+        bg1.draw(sb);
         if (!gameStarted) {
             sb.draw(clicktogo, -200f, -150f);
           }
@@ -192,6 +208,7 @@ public class GameScreen implements Screen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
+        // backgroundC.draw(game.batch);
         randomWorld.draw(game.batch);
         player.draw(game.batch);
 
@@ -224,6 +241,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        viewBGFXport.update(width,height,false);
         viewB2Dport.update(width,height,false);
     }
 

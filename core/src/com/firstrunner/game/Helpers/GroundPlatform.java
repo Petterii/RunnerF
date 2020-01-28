@@ -2,6 +2,7 @@ package com.firstrunner.game.Helpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.firstrunner.game.Firstrunner;
+import com.firstrunner.game.Objects.Arrow;
 import com.firstrunner.game.Objects.Player;
 import com.firstrunner.game.Objects.SkullBox;
 import com.firstrunner.game.Screens.GameScreen;
@@ -30,6 +32,8 @@ class GroundPlatform extends Sprite {
     public boolean toDestroy;
     private Body body;
 
+    float positionY;
+
  //   private World world;
     private CreateWorldRandomized screen;
 
@@ -40,7 +44,7 @@ class GroundPlatform extends Sprite {
         this.platformX = platformX;
         Random rand = new Random();
         float posY = (100*rand.nextFloat())/PPM;
-
+        this.positionY = posY;
         isDestroyed = false;
     //    this.world = GameScreen.world;
         // this.screen = screen;
@@ -110,7 +114,7 @@ class GroundPlatform extends Sprite {
         //bdef.position.set(centerPoint,10f/PPM);
 
         //trigger = GameScreen.world.createBody(bdef);
-
+        arrow = new Arrow(screen,centerPoint,positionY);
         shape = new EdgeShape();
         shape.set(new Vector2(centerPoint, 200/PPM), new Vector2(centerPoint, -10f));
         fdef.shape = shape;
@@ -139,6 +143,14 @@ class GroundPlatform extends Sprite {
             GameScreen.world.destroyBody(body);
             isDestroyed = true;
         }
+    }
+
+    private Arrow arrow;
+
+    @Override
+    public void draw(Batch batch) {
+        arrow.draw(batch);
+         super.draw(batch);
     }
 
     public void spawnNewPlatform(){

@@ -18,15 +18,16 @@ import com.firstrunner.game.Screens.GameScreen;
 import static com.firstrunner.game.Globals.*;
 
 public class Player extends Sprite {
-
-
+    private final float speedLenght = 0.5f;
+    private final float cooldownLenght = 1.2f;
     public static float getPos() {
         return mainBody.getBody().getPosition().x;
     }
 
     public void started() {
-        startRollingSound();
         landingSound.play();
+        stateTimer = 0.0f;
+        setGrounded(true);
         started = true;
     }
     public void fallDown(){
@@ -66,15 +67,31 @@ public class Player extends Sprite {
 
     public void stopRollingSound(){
         if (isRollingSoundPlaying)
-            rollingsound.stop();
+            rollingsound.stop(soundId);
         isRollingSoundPlaying = false;
-        isgrounded = false;
     }
+
+    public void setGrounded(boolean value){
+        isgrounded = value;
+    }
+
+    public void setRollingSound(){
+        float what = mainBody.getBody().getLinearVelocity().x;
+        if (isgrounded && what > 0.1f){
+            startRollingSound();
+        } else
+            stopRollingSound();
+    }
+
+    private long soundId;
+
     public void startRollingSound(){
-        if (!isRollingSoundPlaying)
-            rollingsound.play(0.2f);
+        if (!isRollingSoundPlaying) {
+            soundId = rollingsound.play(0.3f);
+            rollingsound.setLooping(soundId,true);
+            rollingsound.setPitch(soundId,1f);
+         }
         isRollingSoundPlaying = true;
-        isgrounded = true;
     }
 
 
@@ -86,7 +103,8 @@ public class Player extends Sprite {
         speedupSound = screen.getManager().get(SOUND_SPEEDUP);
         landingSound = screen.getManager().get(SOUND_LANDING);
         rollingsound.setLooping(1,true);
-
+        rollingsound.play();
+        rollingsound.pause(1);
         stateTimer = 10;
         cooldownSpeed = 0;
         time = 1;
@@ -129,15 +147,12 @@ public class Player extends Sprite {
 
     private State getState(){
 
-        if (mainBody.getBody().getLinearVelocity().x <= 1f && cooldownSpeed < 1f)
+        if (mainBody.getBody().getLinearVelocity().x <= 1f && cooldownSpeed < cooldownLenght)
             return State.NORMAL;
         else if (mainBody.getBody().getLinearVelocity().x >= 2f)
             return State.SPEEDING;
-        else if (stateTimer > 0.5f){
+        else if (stateTimer > 0.9f){
             time = 1;
-            if (isgrounded) {
-                startRollingSound();
-            }
             return State.AVAILSPEED;
         }
         return State.NOTHING;
@@ -149,9 +164,14 @@ public class Player extends Sprite {
 
     private boolean isgrounded;
     private float roationSpeed;
+    private float previousPosition;
 
     public void update(float dt) {
-
+        setRollingSound();
+        stateTimer += dt;
+        if ((mainBody.getBody().getPosition().x == previousPosition && started && stateTimer > 1f) || mainBody.getBody().getPosition().y < -1f)
+            screen.setGameover(true);
+        previousPosition = mainBody.getBody().getPosition().x;
         cooldownSpeed = cooldownSpeed +dt;
         if (!started)
             fallDown();
@@ -163,6 +183,8 @@ public class Player extends Sprite {
         } else{
             mainBody.getBody().setLinearVelocity(0.0f,mainBody.getBody().getLinearVelocity().y);
         }
+
+
 
         velocity(dt);
 
@@ -181,14 +203,14 @@ public class Player extends Sprite {
     public void velocity(float dt){
         stateTimer = stateTimer + dt;
 
-        if (stateTimer > 0.3f) {
+        if (stateTimer > speedLenght) {
             switch (getState()) {
                 case NORMAL:
                     cooldownSpeed = cooldownSpeed + dt;
                     velocity = 0.5f;
                     break;
                 case SPEEDING:
-                    velocity = -1;
+                    velocity = -1.0f;
                     break;
                 case NOTHING:
                     velocity = 0.3f;
@@ -199,6 +221,7 @@ public class Player extends Sprite {
             velocity = 0;
         mainBody.getBody().setLinearVelocity(velocity*time,mainBody.getBody().getLinearVelocity().y);
     }
+
 
     public void addForce(float dt) {
 

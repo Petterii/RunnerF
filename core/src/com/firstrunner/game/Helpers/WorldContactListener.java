@@ -63,9 +63,9 @@ public class WorldContactListener implements ContactListener {
         switch (cDef) {
             case GROUND_BIT | PLAYER_BIT:
                 if (fixA.getFilterData().categoryBits == PLAYER_BIT) {
-                    ((Player) fixA.getUserData()).stopRollingSound();
+                    ((Player) fixA.getUserData()).setGrounded(false);
                 }else
-                    ((Player) fixB.getUserData()).stopRollingSound();
+                    ((Player) fixB.getUserData()).setGrounded(false);
                 break;
         }
     }

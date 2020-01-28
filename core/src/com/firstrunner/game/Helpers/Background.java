@@ -25,6 +25,7 @@ public class Background extends Sprite {
         textureRegion = new TextureRegion((Texture) screen.getManager().get(TEXTURE_BACKGROUNDENDLESS));
         textureRegionBounds1 = new Rectangle(0 - Firstrunner.FR_WIDTH / 2, 0, Firstrunner.FR_WIDTH, Firstrunner.FR_HEIGHT);
         textureRegionBounds2 = new Rectangle(Firstrunner.FR_WIDTH / 2, 0, Firstrunner.FR_WIDTH, Firstrunner.FR_HEIGHT);
+
     }
 
 
@@ -39,10 +40,9 @@ public class Background extends Sprite {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        batch.draw(textureRegion, textureRegionBounds1.x, textureRegionBounds1.y, Firstrunner.FR_WIDTH,
-                Firstrunner.FR_HEIGHT);
-        batch.draw(textureRegion, textureRegionBounds2.x, textureRegionBounds2.y, Firstrunner.FR_WIDTH,
-                Firstrunner.FR_HEIGHT);
+        batch.draw(textureRegion, textureRegionBounds1.x, textureRegionBounds1.y, Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT);
+
+        batch.draw(textureRegion, textureRegionBounds2.x, textureRegionBounds2.y, Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT);
     }
 
     private boolean leftBoundsReached(float delta) {

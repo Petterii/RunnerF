@@ -40,6 +40,8 @@ public class Firstrunner extends Game {
 		manager.load(TEXTURE_CLICKTOGO,Texture.class);
 		manager.load(TEXTURE_BACKGROUNDENDLESS,Texture.class);
 		manager.load(TEXTURE_EXPLOSION, Texture.class);
+		manager.load(TEXTURE_ARROW, Texture.class);
+
 
 		manager.load(MUSIC_LOOP, Music.class);
 		manager.load(SOUND_BALL_ROLLING, Sound.class);
