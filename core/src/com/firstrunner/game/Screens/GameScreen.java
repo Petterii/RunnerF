@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -56,6 +57,7 @@ public class GameScreen implements Screen {
     private WallDestroyer wallDestroyer;
     private boolean gameover;
 
+
     private SpriteBatch sb;
     private  Music music;
 
@@ -81,6 +83,7 @@ public class GameScreen implements Screen {
         playerSpeed = 1;
         speed = -1f;
         items = new ArrayList<>();
+        playerdead = false;
         gamecam = new OrthographicCamera();
         viewB2Dport = new FitViewport(Firstrunner.FR_WIDTH/PPM,Firstrunner.FR_HEIGHT/PPM,gamecam);
         viewB2Dport.apply();
@@ -147,7 +150,7 @@ public class GameScreen implements Screen {
         }
         randomWorld.update(delta);
         wallDestroyer.update(delta);
-        if (gameStarted)
+        if (gameStarted && !playerdead)
             backgroundScrollingupdate(delta);
 
         for (Items item : items) {
@@ -199,15 +202,8 @@ public class GameScreen implements Screen {
        // b2dr.render(world,gamecam.combined);
         sb.setProjectionMatrix(graphicCam.combined);
         sb.begin();
-        //sb.draw(background1,bgOffset1,-Firstrunner.FR_HEIGHT/2,1200,Firstrunner.FR_HEIGHT);
-        //sb.draw(background2,bgOffset2,-Firstrunner.FR_HEIGHT/2,1200,Firstrunner.FR_HEIGHT);
-        //backgroundC.draw(sb);
-        //
         bg.draw(sb);
         bg1.draw(sb);
-        if (!gameStarted) {
-            sb.draw(clicktogo, -200f, -150f);
-          }
         sb.end();
 
         game.batch.setProjectionMatrix(gamecam.combined);
@@ -219,18 +215,36 @@ public class GameScreen implements Screen {
         game.batch.end();
         hud.stage.draw();
 
+        sb.begin();
+        if (!gameStarted) {
+            sb.draw(clicktogo, -200f, -150f);
+        }
+        if (playerdead)
+            sb.draw((Texture)manager.get(TEXTURE_RETRYBUTTON),-Firstrunner.FR_WIDTH/3f,-30f);
+        sb.end();
+
+
         handleinput(delta);
 
         if (gameover){
-            game.setScreen(new GameScreen(game));
+            playerdead = true;
+            //game.setScreen(new GameScreen(game));
         }
     }
 
+    private boolean playerdead;
     public static float playerSpeed;
     private static boolean gameStarted;
 
     private void handleinput(float delta) {
         if (Gdx.input.isTouched()){
+            float positionPressedX = Gdx.input.getX();
+            float positionPressedY = Gdx.input.getY();
+
+            Gdx.app.log("pressing","X:"+positionPressedX + "  Y:"+positionPressedY);
+            if (positionPressedX < Gdx.graphics.getWidth()/2 && playerdead)
+                 game.setScreen(new GameScreen(game));
+
             if (gameStarted)
                 player.addForce(delta);
             else

@@ -115,6 +115,7 @@ public class Player extends Sprite {
         setOrigin(10f/PPM,10f/PPM);
         setBounds(0,0,20f/PPM,20f/PPM);
         setRegion(textureRegion);
+        setPosition(mainBody.getBody().getPosition().x- getWidth()/2, mainBody.getBody().getPosition().y-getHeight()/2);
 
     }
 
