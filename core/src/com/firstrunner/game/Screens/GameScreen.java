@@ -37,6 +37,9 @@ import java.util.ArrayList;
 
 import javax.xml.bind.ValidationException;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
+
 import static com.firstrunner.game.Globals.*;
 
 public class GameScreen implements Screen {
@@ -85,7 +88,7 @@ public class GameScreen implements Screen {
         gameStarted = false;
         this.manager = game.getManager();
         playerSpeed = 1;
-        speed = -1f;
+        speed = .1f;
         items = new ArrayList<>();
         playerdead = false;
         gamecam = new OrthographicCamera();
@@ -129,8 +132,25 @@ public class GameScreen implements Screen {
         float width = bg.getWidth();
         bgOffset1 = -bg.getWidth();
         bgOffset2 = 0;
-
+        initLights();
         initializeFonts();
+    }
+
+    private RayHandler rayHandler;
+
+    PointLight pl;
+    private void initLights() {
+        rayHandler = new RayHandler(world);
+        pl = new PointLight(rayHandler, 128, new Color(0.2f,1,0,1f), 5,-5,2);
+        //PointLight pl2 = new PointLight(rayHandler, 128, new Color(1,0,1,1f), 10,5,2);
+
+        rayHandler.setShadows(false);
+        rayHandler.setAmbientLight(0.5f);
+        short mb = -1;
+        pl.setContactFilter(mb,mb,(short)(GROUND_BIT | PLAYER_BIT));
+        pl.setStaticLight(false);
+        pl.setSoft(true);
+
     }
 
     private Hills bg,bg1;
@@ -145,8 +165,8 @@ public class GameScreen implements Screen {
             bgOffset1 = bgOffset2 + bgwidth-1f;
         else if (bgOffset2 <= -bg.getWidth()-(Firstrunner.FR_WIDTH/2))
             bgOffset2 = bgOffset1 + bgwidth-1f;
-        bgOffset1 = bgOffset1-1f;
-        bgOffset2 = bgOffset2-1f;
+        bgOffset1 = bgOffset1-1f*speed;
+        bgOffset2 = bgOffset2-1f*speed;
     }
 
     FreeTypeFontGenerator fontGenerator;
@@ -259,6 +279,9 @@ public class GameScreen implements Screen {
             playerdead = true;
             //game.setScreen(new GameScreen(game));
         }
+        pl.setPosition(player.getMainBody().getPosition().x-2.4f,2f);
+        rayHandler.setCombinedMatrix(gamecam.combined,player.getMainBody().getPosition().x-0.5f,0,player.getMainBody().getPosition().x-0.5f,-1f);
+        rayHandler.updateAndRender();
     }
 
     private boolean playerdead;
@@ -314,6 +337,7 @@ public class GameScreen implements Screen {
         world.dispose();
         b2dr.dispose();
         music.dispose();
+        rayHandler.dispose();
     }
 
     public float getPlayerX() {
