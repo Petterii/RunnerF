@@ -31,7 +31,8 @@ public class Globals {
     public static final String TEXTURE_CLICKTOGO = "art/objects/click_to_go.png";
     public static final String TEXTURE_BACKGROUNDENDLESS = "art/background/bg1_1.png";
     public static final String TEXTURE_RETRYBUTTON = "art/objects/retrybutton.png";
-  public static final String TEXTURE_EXPLOSION = "art/objects/explosion.png";
+    public static final String TEXTURE_EXPLOSION = "art/objects/explosion.png";
+    public static final String TEXTURE_MAINMENU = "art/background/main_menu.png";
     public static final String TEXTURE_ARROW = "art/objects/ornamented_arrow.png";
     public static final String FONT_ITALIC = "fonts/xcelsion_italic.ttf";
 

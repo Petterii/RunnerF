@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.firstrunner.game.Screens.GameScreen;
+import com.firstrunner.game.Screens.MainMenu;
 import com.firstrunner.game.Screens.NewGameScreen;
 
 import static com.firstrunner.game.Globals.*;
@@ -43,7 +44,7 @@ public class Firstrunner extends Game {
 		manager.load(TEXTURE_EXPLOSION, Texture.class);
 		manager.load(TEXTURE_ARROW, Texture.class);
 		manager.load(TEXTURE_RETRYBUTTON, Texture.class);
-		//manager.load(FONT_ITALIC, FreeTypeFontGenerator.class);
+		manager.load(TEXTURE_MAINMENU, Texture.class);
 
 
 		manager.load(MUSIC_LOOP, Music.class);
@@ -57,7 +58,7 @@ public class Firstrunner extends Game {
 		manager.finishLoading();
 
 
-		setScreen(new GameScreen(this));
+		setScreen(new MainMenu(this));
 	}
 
 	@Override
