@@ -1,30 +1,26 @@
 package com.firstrunner.game;
 
 public class Globals {
-
-
+    
     public static final boolean DEBUGGER_BOX2D_ENABLED = false;
 
     // box2d converting 1m to 1cm per pixel
     public static final int PPM = 100;
 
-    // Contact listener bits
-    public static final short PLAYER_BIT = 2;
-    public static final short GROUND_BIT = 4;
-    public static final short ITEM_BIT = 8;
-    public static final short LEVEL_END = 16;
-    public static final short TRIGGER_SPAWN = 32;
-    public static final short WALL_DESTROYER = 64;
+    // variables to tweek game
+    public static final float PLATFORM_WIDTH = 800f;
+    public static final float PLATFORM_JUMPTRIGGER = 1f;
 
-
+    public static final float BALLFORCEUPP = 200f;
+    public static final float BALL_XVELOCITYSPEED = -2f;
 
     // files textures
 
     public static final String BACKGROUND_MENU = "art/background/countryside.png";
     public static final String PLAYER_BALL = "art/objects/ball1.png";
     public static final String TEXTURE_CRATE = "art/objects/obj_crate001.png";
-   // public static final String TEXTURE_PLATFORM1 = "art/objects/platform1.png";
-   public static final String TEXTURE_PLATFORM1 = "art/background/bg1_2.png";
+    // public static final String TEXTURE_PLATFORM1 = "art/objects/platform1.png";
+    public static final String TEXTURE_PLATFORM1 = "art/background/bg1_2.png";
     public static final String BOX_BREAKING = "sound/box_smashed.ogg";
     public static final String SOUND_BALL_ROLLING = "sound/rolling.wav";
     public static final String SOUND_JUMP = "sound/jump.wav";
@@ -44,12 +40,12 @@ public class Globals {
     public static final float TEXTURE_BOUNCINGBALL_WIDTH = 64;
     public static final float TEXTURE_BOUNCINGBALL_HEIGHT = 64;
 
-
-    /// GAME VARIABLES
-    public static final float BALLFORCEUPP = 200f;
-    public static final float BALL_XVELOCITYSPEED = -2f;
-
-
-
+    // Contact listener bits
+    public static final short PLAYER_BIT = 2;
+    public static final short GROUND_BIT = 4;
+    public static final short ITEM_BIT = 8;
+    public static final short LEVEL_END = 16;
+    public static final short TRIGGER_SPAWN = 32;
+    public static final short WALL_DESTROYER = 64;
 
 }

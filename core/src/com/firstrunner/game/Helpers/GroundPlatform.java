@@ -60,8 +60,8 @@ class GroundPlatform extends Sprite {
         body = GameScreen.world.createBody(bdef);
 
 
-        startPoint = (Firstrunner.FR_WIDTH*platformX) /PPM;
-        endPoint = startPoint + ((float)Firstrunner.FR_WIDTH /PPM);
+        startPoint = (PLATFORM_WIDTH*platformX) /PPM;
+        endPoint = startPoint + ((float)PLATFORM_WIDTH /PPM);
 
         shape = new EdgeShape();
         shape.set(new Vector2(startPoint, posY), new Vector2(endPoint, posY));
@@ -114,7 +114,8 @@ class GroundPlatform extends Sprite {
 
         // not fully center. alittle forward triggers jump and new platformspawn
        // float centerPoint = (((Firstrunner.FR_WIDTH+platformX) +platformX)/PPM)/2;
-        float centerPoint = startPoint+((endPoint-startPoint)*0.7f);
+        // float centerPoint = startPoint+((endPoint-startPoint)*0.7f);
+        float centerPoint = startPoint+((endPoint-startPoint)-PLATFORM_JUMPTRIGGER);
 
         bdef.type = BodyDef.BodyType.StaticBody;
         //bdef.position.set(centerPoint,10f/PPM);
