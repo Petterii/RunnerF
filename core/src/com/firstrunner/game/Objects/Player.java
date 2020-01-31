@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.firstrunner.game.Firstrunner;
 import com.firstrunner.game.Helpers.CreateWorldRandomized;
@@ -142,9 +143,37 @@ public class Player extends Sprite {
                 Hud.addScore(20);
             } else if (!skull.toDestroy){
                 isTouching = true;
-                screen.setGameover(true);
+                playerDead();
             }
         }
+        else if (item instanceof Fourarmguy){
+            Fourarmguy en= (Fourarmguy) item;
+            Gdx.app.log("LIB", "collition: "+getState().toString());
+            if (getState() == State.SPEEDING || mainBody.getBody().getPosition().y > en.getBody().getPosition().y+10f/PPM){
+                time = 0.3f;
+                ((Sound) screen.getManager().get(BOX_BREAKING)).play();
+                en.enableDestroy();
+                Hud.addScore(20);
+            } else if (!en.toDestroy){
+                isTouching = true;
+
+            }
+        }   else if (item instanceof BouncingBall) {
+            // another sound probbly. dieing? how does a ball die?
+            //  ((Sound) screen.getManager().get(BOX_BREAKING)).play();
+            //en.enableDestroy();
+            //Hud.addScore(20);
+            playerDead();
+            //screen.setGameover(true); // temporery thing... need a dead animation/something
+
+
+        }
+    }
+
+    private void playerDead(){
+        Filter filter = new Filter();
+        filter.categoryBits = 0;
+        mainBody.getFixture().setFilterData(filter);
     }
 
     private State getState(){

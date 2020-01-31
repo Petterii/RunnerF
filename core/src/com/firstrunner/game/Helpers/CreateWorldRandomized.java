@@ -12,7 +12,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.firstrunner.game.Firstrunner;
+import com.firstrunner.game.Objects.BouncingBall;
 import com.firstrunner.game.Objects.Explosion;
+import com.firstrunner.game.Objects.Fourarmguy;
+import com.firstrunner.game.Objects.Items;
 import com.firstrunner.game.Objects.SkullBox;
 import com.firstrunner.game.Screens.GameScreen;
 
@@ -26,8 +29,9 @@ import static com.firstrunner.game.Globals.PPM;
 public class CreateWorldRandomized {
 
     private static World world;
+   // private final Fourarmguy enemy;
     private Array<GroundPlatform> groundPlatforms;
-    private static Array<SkullBox> objects;
+    private static Array<Items> objects;
     private static Array<Explosion> explosions;
 
     private GameScreen screen;
@@ -35,6 +39,7 @@ public class CreateWorldRandomized {
     private static float playerX;
     private static boolean spawnNewPlat;
     private static float chunk;
+    private BouncingBall ball;
 
     public CreateWorldRandomized(GameScreen screen) {
     this.screen = screen;
@@ -49,6 +54,7 @@ public class CreateWorldRandomized {
     spawnNewPlat = false;
     this.chunk = 0;
     spawnPlatform();
+    //enemy = new Fourarmguy(this);
     }
 
     // private int chunkNr;
@@ -89,7 +95,7 @@ public class CreateWorldRandomized {
             ground.update(delta);
         }
 
-        for (SkullBox object : objects) {
+        for (Items object : objects) {
             object.update(delta);
         }
         for (Explosion object : explosions) {
@@ -100,6 +106,8 @@ public class CreateWorldRandomized {
             spawnNewPlat =false;
             spawnPlatform();
         }
+
+       // enemy.update(delta);
 
        removeGrounds();
     }
@@ -131,9 +139,9 @@ public class CreateWorldRandomized {
 
     }
 
-    public void addObject(SkullBox skullBox) {
+    public void addObject(Items item) {
 
-        objects.add(skullBox);
+        objects.add(item);
     }
 
     public GameScreen getGameScreen() {
@@ -148,7 +156,7 @@ public class CreateWorldRandomized {
                 gp.draw(batch);
         }
 
-        for (SkullBox sb : objects) {
+        for (Items sb : objects) {
             if (!sb.isDestroyed())
                 sb.draw(batch);
         }
@@ -157,5 +165,9 @@ public class CreateWorldRandomized {
             if (!sb.isDestroyed())
                 sb.draw(batch);
         }
+
+
+      //  enemy.draw(batch);
+
     }
 }

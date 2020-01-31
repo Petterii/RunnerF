@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.firstrunner.game.Firstrunner;
 import com.firstrunner.game.Objects.Arrow;
+import com.firstrunner.game.Objects.Fourarmguy;
 import com.firstrunner.game.Objects.Player;
 import com.firstrunner.game.Objects.SkullBox;
 import com.firstrunner.game.Screens.GameScreen;
@@ -81,7 +82,12 @@ class GroundPlatform extends Sprite {
     float insidePlatform = startPoint+(diff*rand.nextFloat());
     // dont spawn on the first platform where player starts
     if (platformX != 0)
-        screen.addObject( new SkullBox(screen.getGameScreen(),insidePlatform,posY+0.1f));
+        if (platformX <= 3) // randomize or later spawn/ as in progression becomes harder
+            screen.addObject( new SkullBox(screen.getGameScreen(),insidePlatform,posY+0.1f));
+        else
+            screen.addObject( new Fourarmguy(screen,startPoint+diff-(diff/5f),posY+0.1f));
+
+
         createTrigger();
 
 

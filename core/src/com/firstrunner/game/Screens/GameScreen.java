@@ -29,6 +29,8 @@ import com.firstrunner.game.Helpers.CreateWorldRandomized;
 import com.firstrunner.game.Helpers.Prefferences;
 import com.firstrunner.game.Helpers.WallDestroyer;
 import com.firstrunner.game.Helpers.WorldContactListener;
+import com.firstrunner.game.Objects.BouncingBall;
+import com.firstrunner.game.Objects.Fourarmguy;
 import com.firstrunner.game.Objects.Hills;
 import com.firstrunner.game.Objects.Items;
 import com.firstrunner.game.Objects.Player;
@@ -134,8 +136,11 @@ public class GameScreen implements Screen {
         bgOffset2 = 0;
         initLights();
         initializeFonts();
+
+
     }
 
+    private Fourarmguy enemy;
     private RayHandler rayHandler;
 
     PointLight pl;
@@ -238,7 +243,7 @@ public class GameScreen implements Screen {
       //  backgroundC.update(delta);
       //  renderer.render();
 
-       // b2dr.render(world,gamecam.combined);
+
         sb.setProjectionMatrix(graphicCam.combined);
         sb.begin();
         bg.draw(sb);
@@ -282,6 +287,9 @@ public class GameScreen implements Screen {
         pl.setPosition(player.getMainBody().getPosition().x-2.4f,2f);
         rayHandler.setCombinedMatrix(gamecam.combined,player.getMainBody().getPosition().x-0.5f,0,player.getMainBody().getPosition().x-0.5f,-1f);
         rayHandler.updateAndRender();
+
+        if (DEBUGGER_BOX2D_ENABLED)
+            b2dr.render(world,gamecam.combined);
     }
 
     private boolean playerdead;
