@@ -64,15 +64,20 @@ public class Hud implements Disposable {
         table.add(highscoreLabel).padTop(20f).padLeft(40f);
 
         stage.addActor(table);
-
+        timer = 0.0f;
     }
 
     public static int getScore() {
         return score;
     }
 
+    float timer;
     public void update(float dt) {
-
+        timer += dt;
+        if (timer > 1.0f){
+            addScore(1);
+            timer = 0.0f;
+        }
     }
 
     public static void addScore(int value){

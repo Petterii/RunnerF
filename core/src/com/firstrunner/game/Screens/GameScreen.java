@@ -232,7 +232,8 @@ public class GameScreen implements Screen {
         bg.update(delta,bgOffset1);
         bg1.update(delta,bgOffset2);
         graphicCam.update();
-        hud.update(delta);
+        if (gameStarted)
+            hud.update(delta);
 
         //renderer.setView(gamecam);
     }
