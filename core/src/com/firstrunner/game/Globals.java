@@ -38,6 +38,8 @@ public class Globals {
     public static final String FONT_ITALIC = "fonts/xcelsion_italic.ttf";
     public static final String FONT_PNG = "fonts/calibri_regular_24.PNG";
 
+    public static final String TEXTURE_TITLETEXT = "art/background/titletext.png";
+
     public static final float TEXTURE_BOUNCINGBALL_WIDTH = 64;
     public static final float TEXTURE_BOUNCINGBALL_HEIGHT = 64;
 

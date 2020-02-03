@@ -16,6 +16,7 @@ import com.firstrunner.game.Objects.MainBall;
 
 import static com.firstrunner.game.Globals.TEXTURE_BACKGROUNDENDLESS;
 import static com.firstrunner.game.Globals.TEXTURE_MAINMENU;
+import static com.firstrunner.game.Globals.TEXTURE_TITLETEXT;
 
 public class MainMenu implements Screen {
 
@@ -25,6 +26,7 @@ public class MainMenu implements Screen {
     private OrthographicCamera cam;
     private Viewport viewport;
     private MainBall ball;
+    private Texture title;
 
     public MainMenu(Firstrunner game) {
     this.game = game;
@@ -34,7 +36,8 @@ public class MainMenu implements Screen {
     ball = new MainBall(this);
     bgOffset1 = -bg.getWidth();
     bgOffset2 = 0;
-    //bgr = new TextureRegion(bg,437,286);
+    title = game.getManager().get(TEXTURE_TITLETEXT);
+    bgr = new TextureRegion(title,437,286);
     cam = new OrthographicCamera(Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT);
     viewport = new FitViewport(Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT,cam);
     viewport.apply();
@@ -61,8 +64,9 @@ public class MainMenu implements Screen {
         game.batch.begin();
         bg.draw(game.batch);
         bg1.draw(game.batch);
-        // game.batch.draw(bgr,0,0,Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT);
         ball.draw(game.batch);
+         game.batch.draw(bgr,Firstrunner.FR_WIDTH/7,-Firstrunner.FR_HEIGHT/4,Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT);
+
         game.batch.end();
 
         handleInput();
