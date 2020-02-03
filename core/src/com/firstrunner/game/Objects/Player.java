@@ -119,6 +119,8 @@ public class Player extends Sprite {
         setRegion(textureRegion);
         setPosition(mainBody.getBody().getPosition().x- getWidth()/2, mainBody.getBody().getPosition().y-getHeight()/2);
 
+
+
     }
 
     private void defineBody() {
@@ -141,6 +143,7 @@ public class Player extends Sprite {
                 ((Sound) screen.getManager().get(BOX_BREAKING)).play();
                 skull.enableDestroy();
                 Hud.addScore(20);
+                screen.addFT(skull.getPoints(),skull.getBody().getPosition().x,skull.getBody().getPosition().y);
             } else if (!skull.toDestroy){
                 isTouching = true;
                 playerDead();
@@ -149,21 +152,24 @@ public class Player extends Sprite {
         else if (item instanceof Fourarmguy){
             Fourarmguy en= (Fourarmguy) item;
             Gdx.app.log("LIB", "collition: "+getState().toString());
+                time = 0.3f;
+                ((Sound) screen.getManager().get(BOX_BREAKING)).play();
+                en.enableDestroy();
+                Hud.addScore(20);
+
+        }   else if (item instanceof BouncingBall) {
+            BouncingBall en= (BouncingBall) item;
+            // another sound probbly. dieing? how does a ball die?
+            //  ((Sound) screen.getManager().get(BOX_BREAKING)).play();
+            //en.enableDestroy();
+            //Hud.addScore(20);
             if (getState() == State.SPEEDING || mainBody.getBody().getPosition().y > en.getBody().getPosition().y+10f/PPM){
                 time = 0.3f;
                 ((Sound) screen.getManager().get(BOX_BREAKING)).play();
                 en.enableDestroy();
                 Hud.addScore(20);
-            } else if (!en.toDestroy){
-                isTouching = true;
-
-            }
-        }   else if (item instanceof BouncingBall) {
-            // another sound probbly. dieing? how does a ball die?
-            //  ((Sound) screen.getManager().get(BOX_BREAKING)).play();
-            //en.enableDestroy();
-            //Hud.addScore(20);
-            playerDead();
+            } else
+                playerDead();
             //screen.setGameover(true); // temporery thing... need a dead animation/something
 
 

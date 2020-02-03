@@ -14,16 +14,21 @@ public class Hills extends Sprite {
 
     private final Texture background1;
     private TextureRegion region;
-
+    private boolean fromMain;
     private float bgwidth;
 
-    public Hills(GameScreen screen,int bgNr) {
-        background1 = (Texture)screen.getManager().get(TEXTURE_BACKGROUNDENDLESS);
+    public Hills(Texture texture,int bgNr,boolean fromMain) {
+        this.fromMain = fromMain;
+        background1 = texture;
         bgwidth = background1.getWidth();
 
+        region = new TextureRegion(texture,0,0,437,208);
+        if (fromMain)
+            setBounds(0,0, 437,Firstrunner.FR_HEIGHT*2);
+        else
+            setBounds(0,0, 437,Firstrunner.FR_HEIGHT);
 
-        setBounds(0,0, bgwidth,Firstrunner.FR_HEIGHT);
-        setRegion(background1);
+        setRegion(region);
         setPosition(0,-Firstrunner.FR_HEIGHT/2);
     }
 

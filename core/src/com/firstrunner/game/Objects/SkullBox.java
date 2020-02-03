@@ -30,6 +30,7 @@ public class SkullBox extends Items {
     private Texture texture;
     private TextureRegion textureRegion;
     private GameScreen screen;
+    private int points;
 
 
     public Body getBody(){
@@ -42,6 +43,7 @@ public class SkullBox extends Items {
         this.screen = screen;
         posX = x;
         posY = y;
+        points = 20;
         stateTimer = 0;
         toDestroy = false;
         defineBody();
@@ -108,6 +110,10 @@ public class SkullBox extends Items {
         return isDestroyed;
     }
 
+    @Override
+    public int getPoints() {
+        return this.points;
+    }
 
 
     private void defineBody(){

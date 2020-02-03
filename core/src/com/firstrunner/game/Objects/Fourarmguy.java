@@ -81,6 +81,11 @@ public class Fourarmguy extends Items {
         return isDestroyed;
     }
 
+    @Override
+    public int getPoints() {
+        return 0;
+    }
+
     private Array<BouncingBall> balls;
     private void spawnBall() {
         timerBetweenBallSpawns = 0f;

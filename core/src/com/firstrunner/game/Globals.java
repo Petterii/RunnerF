@@ -1,7 +1,7 @@
 package com.firstrunner.game;
 
 public class Globals {
-    
+
     public static final boolean DEBUGGER_BOX2D_ENABLED = false;
 
     // box2d converting 1m to 1cm per pixel
@@ -36,6 +36,7 @@ public class Globals {
     public static final String TEXTURE_BOUNCINGBALL = "art/objects/poisonblob.png";
     public static final String TEXTURE_DOUBLEENEMY = "art/objects/enemy.png";
     public static final String FONT_ITALIC = "fonts/xcelsion_italic.ttf";
+    public static final String FONT_PNG = "fonts/calibri_regular_24.PNG";
 
     public static final float TEXTURE_BOUNCINGBALL_WIDTH = 64;
     public static final float TEXTURE_BOUNCINGBALL_HEIGHT = 64;

@@ -20,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.firstrunner.game.Firstrunner;
@@ -30,6 +31,7 @@ import com.firstrunner.game.Helpers.Prefferences;
 import com.firstrunner.game.Helpers.WallDestroyer;
 import com.firstrunner.game.Helpers.WorldContactListener;
 import com.firstrunner.game.Objects.BouncingBall;
+import com.firstrunner.game.Objects.FloatingText;
 import com.firstrunner.game.Objects.Fourarmguy;
 import com.firstrunner.game.Objects.Hills;
 import com.firstrunner.game.Objects.Items;
@@ -85,6 +87,7 @@ public class GameScreen implements Screen {
     }
 
     public GameScreen(Firstrunner game) {
+        fts = new Array<>();
         this.game = game;
         this.hud = new Hud(game.batch);
         gameStarted = false;
@@ -113,8 +116,8 @@ public class GameScreen implements Screen {
         graphicCam = new OrthographicCamera();
         viewBGFXport = new FitViewport(Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT,graphicCam);
         viewBGFXport.apply();
-        bg = new Hills(this,1);
-        bg1 = new Hills(this,2);
+        bg = new Hills((Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS),1,false);
+        bg1 = new Hills((Texture)game.getManager().get(TEXTURE_BACKGROUNDENDLESS),2,false);
 
         // backgroundC = new Background(this);
         // new CreateWorldFromTiled(this);
@@ -138,6 +141,15 @@ public class GameScreen implements Screen {
         initializeFonts();
 
 
+    }
+
+    FloatingText ft;
+
+    private Array<FloatingText> fts;
+
+    public void addFT(int points, float x,float y){
+        ft = new FloatingText(this, points,x,y);
+        fts.add(ft);
     }
 
     private Fourarmguy enemy;
@@ -189,10 +201,11 @@ public class GameScreen implements Screen {
 
     private void update(float delta){
         world.step(1.0f/60.0f,6,2);
-        if (!player.isStarted() || (player.isStarted() && gameStarted)) {
+        if (!player.isStarted() || (player.isStarted() && gameStarted) ) {
             player.update(delta);
         }
-        randomWorld.update(delta);
+        if (!playerdead)
+            randomWorld.update(delta);
         wallDestroyer.update(delta);
         if (gameStarted && !playerdead)
             backgroundScrollingupdate(delta);
@@ -201,13 +214,27 @@ public class GameScreen implements Screen {
             if (!item.isDestroyed())
                 item.update(delta);
         }
+
+        for (FloatingText ft : fts) {
+            ft.udpate(delta, gamecam.position.x,gamecam.position.y);
+        }
+
+        for (int i = 0; i < fts.size; i++) {
+            if (fts.get(i).isDestroyed()) {
+                fts.removeIndex(i);
+            }
+        }
+
+
+        if (!playerdead)
             gamecam.position.x = player.getMainBody().getPosition().x;
-            gamecam.update();
-            bg.update(delta,bgOffset1);
-            bg1.update(delta,bgOffset2);
-            graphicCam.update();
-            hud.update(delta);
-            renderer.setView(gamecam);
+        gamecam.update();
+        bg.update(delta,bgOffset1);
+        bg1.update(delta,bgOffset2);
+        graphicCam.update();
+        hud.update(delta);
+
+        //renderer.setView(gamecam);
     }
 
     public TiledMap getMap(){
@@ -239,7 +266,6 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(delta);
-
       //  backgroundC.update(delta);
       //  renderer.render();
 
@@ -275,6 +301,9 @@ public class GameScreen implements Screen {
             sb.draw((Texture) manager.get(TEXTURE_RETRYBUTTON), -Firstrunner.FR_WIDTH / 3f, -30f);
         }
 
+        for (FloatingText ft1 : fts) {
+            ft1.draw(sb);
+        }
         sb.end();
 
 
@@ -305,9 +334,9 @@ public class GameScreen implements Screen {
             if (positionPressedX < Gdx.graphics.getWidth()/2 && playerdead)
                  game.setScreen(new GameScreen(game));
 
-            if (gameStarted)
+            else if (gameStarted && !playerdead)
                 player.addForce(delta);
-            else
+            else if(!playerdead)
                 gameStarted = true;
         }
 

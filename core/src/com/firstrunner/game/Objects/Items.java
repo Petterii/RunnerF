@@ -12,4 +12,6 @@ public abstract class Items extends Sprite {
     public abstract void enableDestroy();
 
     public abstract boolean isDestroyed();
+
+    public abstract int getPoints();
 }

@@ -36,6 +36,7 @@ public class BouncingBall extends Items {
         //setOrigin(-32f/PPM,-32f/PPM);
         setBounds(0,0,20f/PPM,20f/PPM);
         setRegion(textureRegion);
+
         // todo add texture
     }
 
@@ -83,6 +84,11 @@ public class BouncingBall extends Items {
     @Override
     public boolean isDestroyed() {
         return isDestroyed;
+    }
+
+    @Override
+    public int getPoints() {
+        return 0;
     }
 
 }
