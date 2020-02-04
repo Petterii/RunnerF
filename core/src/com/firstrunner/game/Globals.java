@@ -8,7 +8,7 @@ public class Globals {
     public static final int PPM = 100;
 
     // variables to tweek game
-    public static final float PLATFORM_WIDTH = 800f;
+    public static final float PLATFORM_WIDTH = 300f;
     public static final float PLATFORM_JUMPTRIGGER = 1f;
 
     public static final float BALLFORCEUPP = 200f;

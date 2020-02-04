@@ -3,6 +3,7 @@ package com.firstrunner.game.Objects;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -114,6 +115,7 @@ public class Player extends Sprite {
 
         texture = (Texture)screen.getManager().get(PLAYER_BALL);
         textureRegion = new TextureRegion(texture,0,0,64,64);
+        setColor(Color.GREEN);
         setOrigin(10f/PPM,10f/PPM);
         setBounds(0,0,20f/PPM,20f/PPM);
         setRegion(textureRegion);
@@ -228,6 +230,24 @@ public class Player extends Sprite {
         mainBody.getBody().setAngularVelocity(velocity*-1*roationSpeed);
         setPosition(mainBody.getBody().getPosition().x- getWidth()/2, mainBody.getBody().getPosition().y-getHeight()/2);
        rotate(roationSpeed*velocity*-1);
+       colorOfBall();
+       }
+
+    private void colorOfBall() {
+        // todo change color of ball by texture instead but need diffrent textures
+        /*
+        texture = (Texture)screen.getManager().get(PLAYER_BALL);
+        textureRegion = new TextureRegion(texture,0,0,64,64);
+        setRegion(textureRegion);
+        */
+        if (Hud.getScore()< 10){
+            setColor(Color.GREEN);
+        } else if(Hud.getScore()> 10 && Hud.getScore() < 40){
+            setColor(Color.GOLD);
+        } else if(Hud.getScore()> 40 && Hud.getScore() < 120) {
+            setColor(Color.LIME);
+        }
+
     }
 
     private boolean isTouching;
@@ -265,11 +285,13 @@ public class Player extends Sprite {
 
      if (getState() == State.AVAILSPEED && !isTouching) {
         // mainBody.getBody().applyForceToCenter(0,200f,true);
+            screen.particleeffect(mainBody.getBody().getPosition().x,mainBody.getBody().getPosition().y);
             speedupSound.play();
             stopRollingSound();
             stateTimer = 0;
             cooldownSpeed = 0;
             velocity = 5f;
+            Hud.addScore(1);
         }
 
     }

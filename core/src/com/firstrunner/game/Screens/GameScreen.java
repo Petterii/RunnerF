@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -140,7 +141,15 @@ public class GameScreen implements Screen {
         initLights();
         initializeFonts();
 
-
+        //particleeffect();
+    }
+    ParticleEffect pe;
+    public void particleeffect(float x,float y) {
+        pe = new ParticleEffect();
+        pe.load(Gdx.files.internal("particles/speed_particle.pe"),Gdx.files.internal(""));
+        pe.scaleEffect((1.0f/PPM)*0.3f);
+        pe.getEmitters().first().setPosition(x,y);
+        pe.start();
     }
 
     FloatingText ft;
@@ -201,6 +210,11 @@ public class GameScreen implements Screen {
 
     private void update(float delta){
         world.step(1.0f/60.0f,6,2);
+        if (pe != null){
+            pe.setPosition(player.getMainBody().getPosition().x,player.getMainBody().getPosition().y);
+            pe.update(delta);
+        }
+
         if (!player.isStarted() || (player.isStarted() && gameStarted) ) {
             player.update(delta);
         }
@@ -281,8 +295,10 @@ public class GameScreen implements Screen {
         game.batch.begin();
         // backgroundC.draw(game.batch);
         randomWorld.draw(game.batch);
-        player.draw(game.batch);
 
+        if (pe != null)
+            pe.draw(game.batch);
+        player.draw(game.batch);
         game.batch.end();
         hud.stage.draw();
 

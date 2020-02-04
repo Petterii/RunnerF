@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.firstrunner.game.Firstrunner;
 import com.firstrunner.game.Objects.Hills;
 import com.firstrunner.game.Objects.MainBall;
+
 
 
 import static com.firstrunner.game.Globals.TEXTURE_BACKGROUNDENDLESS;
@@ -28,6 +30,11 @@ public class MainMenu implements Screen {
     private MainBall ball;
     private Texture title;
 
+
+    ParticleEffect pe;
+
+
+
     public MainMenu(Firstrunner game) {
     this.game = game;
     this.speed = 1f;
@@ -41,6 +48,8 @@ public class MainMenu implements Screen {
     cam = new OrthographicCamera(Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT);
     viewport = new FitViewport(Firstrunner.FR_WIDTH,Firstrunner.FR_HEIGHT,cam);
     viewport.apply();
+
+
     }
 
     @Override
@@ -54,6 +63,7 @@ public class MainMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.update();
         ball.update(delta);
+
         bg.update(delta,bgOffset1);
         bg1.update(delta,bgOffset2);
 
